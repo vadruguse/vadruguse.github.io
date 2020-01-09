@@ -7,8 +7,8 @@ let scaling = 6;
 let rectWidth = 120;
 let rectHeight = 150;
 
-let circleArray = [60+400, 195+400, 340+400, 480+400, 620+400];
-let drugArray = [30+400,175+400,315+400,445+400,563+400];
+let circleArray = [60, 300, 537, 780, 620+400];
+let drugArray = [30,275,520,745,963];
 let rectArray = [400,160+380,280+400,420+400,560+400];
 let toplegend = [265, 315, 365]
 
@@ -27,6 +27,8 @@ let drugData = []
 let graphVal = [200+400, 400+150, 400, 50]
 let categoryArray = ['Crime', 'Mental Health', 'Unemployment']
 let ageArray = ['18-25 years', '26-34 years','35-49 years', '50+ years']
+
+let x=0;
 
 function preload() {
   data = loadTable('data/real_data.csv','csv','header')
@@ -71,25 +73,25 @@ function draw() {
 
 //  stroke(0)
 
-  text('Five most abused Illicit drugs in the US and the', 615, 130)
-  text('proportionate affected users in different categories for each drug', 580, 150)
+//   text('Five most abused Illicit drugs in the US and the', 615, 130)
+//   text('proportionate affected users in different categories for each drug', 580, 150)
 
-  textFont('fantasy');
-  textSize(12);
-  text('* According to the National Survey on Drug Use and Health', 40, 250)
-  text('(NSDUH), 19.7 million American adults (aged 18 and older)', 50, 270)
-  text('battled a substance use disorder in 2017.', 50, 290)
+//   textFont('fantasy');
+//   textSize(12);
+//   text('* According to the National Survey on Drug Use and Health', 40, 250)
+//   text('(NSDUH), 19.7 million American adults (aged 18 and older)', 50, 270)
+//   text('battled a substance use disorder in 2017.', 50, 290)
 
-  text('* About 38% of adults in 2017 battled an illicit drug use disorder.', 40, 320)
+//   text('* About 38% of adults in 2017 battled an illicit drug use disorder.', 40, 320)
 
-  text('* Teenagers and people with mental health disorders are more', 40, 350)
-  text('at risk for drug use and addiction than other populations.', 50, 370)
-  textSize(11);
+//   text('* Teenagers and people with mental health disorders are more', 40, 350)
+//   text('at risk for drug use and addiction than other populations.', 50, 370)
+//   textSize(11);
 
-  textFont('serif');
+//   textFont('serif');
 
-  fill('red')
-  text('Note: Click on the above drug to see detailed age demographic statistics', 410, 430)
+//   fill('red')
+//   text('Note: Click on the above drug to see detailed age demographic statistics', 410, 430)
 
   fill(0)
   textSize(14);
@@ -109,14 +111,14 @@ function draw() {
     fill(c1);
     t = (log(drug_users)) * scaling;
     rArray[i] = t;
-    circle(circleArray[i],190,t);
+    circle(circleArray[i],170,t);
 
     // inner circle
     let c2 = color('white');
     fill(c2);
     //r = addicted_to_total;
     r = t*((drug_addicts/drug_users) **0.5);
-    circle(circleArray[i],190,r);
+    circle(circleArray[i],170,r);
 
     // draw rectangles
 //     let offset = 0;
@@ -139,19 +141,19 @@ function draw() {
 //     }
     colorMode(RGB, 100);
     fill(100,0,0,15);
-    ellipse(465,270,90,90)
+    ellipse(60+(i*240),260,120,120)
     fill(0,100,0,15);
-    ellipse(440,320,90,90)
+    ellipse(20+(i*240),330,120,120)
     fill(0,0,100,15);
-    ellipse(500,320,90,90)
+    ellipse(100+(i*240),330,120,120)
     fill(0)
-    text(ellipse_data.get(0,'crime'),460,260)
-    text(ellipse_data.get(0,'mental'),415,335)
-    text(ellipse_data.get(0,'unemployment'),510,335)
-    text(ellipse_data.get(0,'crime_mental'),436,295)
-    text(ellipse_data.get(0,'crime_unemployment'),485,293)
-    text(ellipse_data.get(0,'mental_unemployment'),463,335)
-    text(ellipse_data.get(0,'INTERSECTION'),463,308)
+    text(ellipse_data.get(i,'crime'),53+(i*240),250)
+    text(ellipse_data.get(i,'mental'),(i*240),350)
+    text(ellipse_data.get(i,'unemployment'),110+(i*240),350)
+    text(ellipse_data.get(i,'crime_mental'),25+(i*240),295)
+    text(ellipse_data.get(i,'crime_unemployment'),85+(i*240),293)
+    text(ellipse_data.get(i,'mental_unemployment'),53+(i*240),350)
+    text(ellipse_data.get(i,'INTERSECTION'),53+(i*240),308)
   }
 
   let mouseOnBox = false;
@@ -238,18 +240,37 @@ function draw() {
   }
 
   //draw legend for top rectangles
-  for (index = 0; index < colorArray.length; index++) {
-    stroke(colorArray[index]);
-    strokeWeight(4);
-    //drawingContext.setLineDash([10, 5]);
-    line(1180, toplegend[index], 1250, toplegend[index]);
-    //drawingContext.setLineDash([]);
-    // rect(rectArray[rectArray.length-1]+200, 250+50*index, 100, 30);
-    strokeWeight(1);
+  // for (index = 0; index < colorArray.length; index++) {
+  //   stroke(colorArray[index]);
+  //   strokeWeight(4);
+  //   //drawingContext.setLineDash([10, 5]);
+  //   line(1180, toplegend[index], 1250, toplegend[index]);
+  //   //drawingContext.setLineDash([]);
+  //   // rect(rectArray[rectArray.length-1]+200, 250+50*index, 100, 30);
+  //   strokeWeight(1);
+  //   stroke(0)
+  //   fill(1);
+  //   text(categoryArray[index], rectArray[rectArray.length-1]+320, 270+50*index)
+  // }
+
+  //top circles
+    colorMode(RGB, 100);
+    fill(100,0,0,15);
+    ellipse(60+(i*240),300,50,50)
+    fill(0,100,0,15);
+    ellipse(40+(i*240),330,50,50)
+    fill(0,0,100,15);
+    ellipse(80+(i*240),330,50,50)
     stroke(0)
-    fill(1);
-    text(categoryArray[index], rectArray[rectArray.length-1]+320, 270+50*index)
-  }
+    line(circleArray[circleArray.length-1]+240, 290, circleArray[circleArray.length-1]+320, 290)
+    line(circleArray[circleArray.length-1]+270, 330, circleArray[circleArray.length-1]+320, 330)
+    line(circleArray[circleArray.length-1]+220, 370, circleArray[circleArray.length-1]+320, 370)
+    line(circleArray[circleArray.length-1]+220, 350, circleArray[circleArray.length-1]+220, 370)
+    fill(0)
+    text('Crime', 1345, 294)
+    text('Unemployment', 1345, 334)
+    text('Mental Health', 1345, 374)
+
 
   // outer circle
     let c1 = color('#008000');
