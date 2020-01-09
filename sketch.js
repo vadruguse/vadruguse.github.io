@@ -7,8 +7,8 @@ let scaling = 6;
 let rectWidth = 120;
 let rectHeight = 150;
 
-let circleArray = [60, 300, 537, 780, 620+400];
-let drugArray = [30,275,520,745,963];
+let circleArray = [100, 335, 578, 818, 1055];
+let drugArray = [70,320,565,785,1020];
 let rectArray = [400,160+380,280+400,420+400,560+400];
 let toplegend = [265, 315, 365]
 
@@ -31,8 +31,8 @@ let ageArray = ['18-25 years', '26-34 years','35-49 years', '50+ years']
 let x=0;
 
 function preload() {
-  data = loadTable('data/real_data.csv','csv','header')
-  category_data = loadTable('data/real_categorydata.csv','csv','header')
+  data = loadTable('data/eal_data.csv','csv','header')
+  // category_data = loadTable('real_categorydata.csv','csv','header')
 
   ellipse_data = loadTable('data/ellipse_data.csv', 'csv', 'header')
 
@@ -104,7 +104,7 @@ function draw() {
 
     //write drug name below
     fill(0);
-    text(drug,drugArray[i],400);
+    text(drug,drugArray[i],405);
 
     // outer circle
     let c1 = color('#008000');
@@ -141,19 +141,19 @@ function draw() {
 //     }
     colorMode(RGB, 100);
     fill(100,0,0,15);
-    ellipse(60+(i*240),260,120,120)
+    ellipse(100+(i*240),260,120,120)
     fill(0,100,0,15);
-    ellipse(20+(i*240),330,120,120)
+    ellipse(60+(i*240),330,120,120)
     fill(0,0,100,15);
-    ellipse(100+(i*240),330,120,120)
+    ellipse(140+(i*240),330,120,120)
     fill(0)
-    text(ellipse_data.get(i,'crime'),53+(i*240),250)
-    text(ellipse_data.get(i,'mental'),(i*240),350)
-    text(ellipse_data.get(i,'unemployment'),110+(i*240),350)
-    text(ellipse_data.get(i,'crime_mental'),25+(i*240),295)
-    text(ellipse_data.get(i,'crime_unemployment'),85+(i*240),293)
-    text(ellipse_data.get(i,'mental_unemployment'),53+(i*240),350)
-    text(ellipse_data.get(i,'INTERSECTION'),53+(i*240),308)
+    text(ellipse_data.get(i,'crime'),93+(i*240),245)
+    text(ellipse_data.get(i,'mental'),30+(i*240),350)
+    text(ellipse_data.get(i,'unemployment'),150+(i*240),350)
+    text(ellipse_data.get(i,'crime_mental'),62+(i*240),292)
+    text(ellipse_data.get(i,'crime_unemployment'),125+(i*240),292)
+    text(ellipse_data.get(i,'mental_unemployment'),95+(i*240),350)
+    text(ellipse_data.get(i,'INTERSECTION'),95+(i*240),310)
   }
 
   let mouseOnBox = false;
@@ -262,10 +262,10 @@ function draw() {
     fill(0,0,100,15);
     ellipse(80+(i*240),330,50,50)
     stroke(0)
-    line(circleArray[circleArray.length-1]+240, 290, circleArray[circleArray.length-1]+320, 290)
-    line(circleArray[circleArray.length-1]+270, 330, circleArray[circleArray.length-1]+320, 330)
-    line(circleArray[circleArray.length-1]+220, 370, circleArray[circleArray.length-1]+320, 370)
-    line(circleArray[circleArray.length-1]+220, 350, circleArray[circleArray.length-1]+220, 370)
+    line(circleArray[circleArray.length-1]+210, 290, circleArray[circleArray.length-1]+280, 290)
+    line(circleArray[circleArray.length-1]+230, 330, circleArray[circleArray.length-1]+280, 330)
+    line(circleArray[circleArray.length-1]+185, 370, circleArray[circleArray.length-1]+280, 370)
+    line(circleArray[circleArray.length-1]+185, 350, circleArray[circleArray.length-1]+185, 370)
     fill(0)
     text('Crime', 1345, 294)
     text('Unemployment', 1345, 334)
