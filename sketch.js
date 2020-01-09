@@ -27,6 +27,8 @@ let drugData = []
 let graphVal = [200+400, 400+150, 400, 50]
 let categoryArray = ['Crime', 'Mental Health', 'Unemployment']
 let ageArray = ['18-25 years', '26-34 years','35-49 years', '50+ years']
+let drawCrosses = false
+let toggleBox = []
 
 let x=0;
 
@@ -92,8 +94,19 @@ function draw() {
 
 //   fill('red')
 //   text('Note: Click on the above drug to see detailed age demographic statistics', 410, 430)
-
-  fill(0)
+  if(drawCrosses){
+  fill(0);
+  rect(10, 100, 40, 20);
+  fill(50);
+  rect(50, 100, 40, 20);
+  }
+  else{
+  fill(0);
+  rect(50, 100, 40, 20);
+  fill(50);
+  rect(10, 100, 40, 20);    
+  }
+  fill(0);
   textSize(14);
   for(i=0; i<5;i++){
 
@@ -101,6 +114,9 @@ function draw() {
     let drug_users = data.get(i+1,'total_users')
     let drug_addicts = data.get(i+1,'addicted_users')
     let addicted_to_total = round((drug_addicts/drug_users) * 100)
+
+
+    
 
     //write drug name below
     fill(0);
@@ -139,21 +155,49 @@ function draw() {
 //       text(round(100*category_data.get(i,k+1))+'%', rectArray[i]+0.35*rectWidth, 230+offset + 0.67*height);
 //       offset += height;
 //     }
-    colorMode(RGB, 100);
-    fill(100,0,0,15);
-    ellipse(100+(i*240),260,120,120)
-    fill(0,100,0,15);
-    ellipse(60+(i*240),330,120,120)
-    fill(0,0,100,15);
-    ellipse(140+(i*240),330,120,120)
-    fill(0)
-    text(ellipse_data.get(i,'crime'),93+(i*240),245)
-    text(ellipse_data.get(i,'mental'),30+(i*240),350)
-    text(ellipse_data.get(i,'unemployment'),150+(i*240),350)
-    text(ellipse_data.get(i,'crime_mental'),62+(i*240),292)
-    text(ellipse_data.get(i,'crime_unemployment'),125+(i*240),292)
-    text(ellipse_data.get(i,'mental_unemployment'),95+(i*240),350)
-    text(ellipse_data.get(i,'INTERSECTION'),95+(i*240),310)
+    if(!drawCrosses){
+      colorMode(RGB, 100);
+      fill(100,0,0,15);
+      ellipse(100+(i*240),260,120,120)
+      fill(0,100,0,15);
+      ellipse(60+(i*240),330,120,120)
+      fill(0,0,100,15);
+      ellipse(140+(i*240),330,120,120)
+      fill(0)
+      text(ellipse_data.get(i,'crime'),93+(i*240),245)
+      text(ellipse_data.get(i,'mental'),30+(i*240),350)
+      text(ellipse_data.get(i,'unemployment'),150+(i*240),350)
+      text(ellipse_data.get(i,'crime_mental'),62+(i*240),292)
+      text(ellipse_data.get(i,'crime_unemployment'),125+(i*240),292)
+      text(ellipse_data.get(i,'mental_unemployment'),95+(i*240),350)
+      text(ellipse_data.get(i,'INTERSECTION'),95+(i*240),310)
+    }
+    else{
+      colorMode(RGB, 100);
+      fill(100,0,0,15);
+      ellipse(100+(i*240),260,120,120)
+      fill(0,100,0,15);
+      ellipse(60+(i*240),330,120,120)
+      fill(0,0,100,15);
+      ellipse(140+(i*240),330,120,120)
+      fill(0)
+      let values = [round(100*ellipse_data.get(i,'crime')/ellipse_data.get(i,'UNION')),
+                    round(100*ellipse_data.get(i,'mental')/ellipse_data.get(i,'UNION')),
+                    round(100*ellipse_data.get(i,'unemployment')/ellipse_data.get(i,'UNION')),
+                    round(100*ellipse_data.get(i,'crime_mental')/ellipse_data.get(i,'UNION')),
+                    round(100*ellipse_data.get(i,'crime_unemployment')/ellipse_data.get(i,'UNION')),
+                    round(100*ellipse_data.get(i,'mental_unemployment')/ellipse_data.get(i,'UNION')),
+                    round(100*ellipse_data.get(i,'INTERSECTION')/ellipse_data.get(i,'UNION'))];
+      //console.log(values)
+      text(values[0]+"%",93+(i*240),245)
+      text(values[1]+"%",30+(i*240),350)
+      text(values[2]+"%",150+(i*240),350)
+      text(values[3]+"%",62+(i*240),292)
+
+      text(values[4]+"%",125+(i*240),292)
+      text(values[5]+"%",95+(i*240),350)
+      text(values[6]+"%",95+(i*240),310)
+    }
   }
 
   let mouseOnBox = false;
@@ -311,5 +355,11 @@ function mouseClicked() {
   if(!onBox){
     state = -1;
     drug_name= ''
+  }
+  if(mouseX>=10 && mouseX <= 50 && mouseY>=100 && mouseY<=120){
+      drawCrosses = false;
+  }
+  else if(mouseX>=50 && mouseX <= 90 && mouseY>=100 && mouseY<=120){
+      drawCrosses = true;
   }
 }
