@@ -31,7 +31,7 @@ let ageArray = ['18-25 years', '26-34 years','35-49 years', '50+ years']
 let x=0;
 
 function preload() {
-  data = loadTable('data/eal_data.csv','csv','header')
+  data = loadTable('data/real_data.csv','csv','header')
   // category_data = loadTable('real_categorydata.csv','csv','header')
 
   ellipse_data = loadTable('data/ellipse_data.csv', 'csv', 'header')
