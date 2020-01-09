@@ -32,6 +32,8 @@ function preload() {
   data = loadTable('data/real_data.csv','csv','header')
   category_data = loadTable('data/real_categorydata.csv','csv','header')
 
+  ellipse_data = loadTable('data/ellipse_data.csv', 'csv', 'header')
+
   for(let drug=0;  drug<=4;drug++){
     drugData[drug] = loadTable('data/'+fileNames[drug], 'csv', 'header')
   }
@@ -117,24 +119,39 @@ function draw() {
     circle(circleArray[i],190,r);
 
     // draw rectangles
-    let offset = 0;
-    for(let k=0;k<3;k++) {
-      let k1 = color(colorArray[k]);
-      let k2 = color('black');
-      if(state>=0 && i!=state){
-        k1.setAlpha(100);
-        k2.setAlpha(100);
-      }
-      fill(k1);
+//     let offset = 0;
+//     for(let k=0;k<3;k++) {
+//       let k1 = color(colorArray[k]);
+//       let k2 = color('black');
+//       if(state>=0 && i!=state){
+//         k1.setAlpha(100);
+//         k2.setAlpha(100);
+//       }
+//       fill(k1);
 
-      let height = category_data.get(i,k+1) * rectHeight
+//       let height = category_data.get(i,k+1) * rectHeight
 
-      rect(rectArray[i],230+offset, rectWidth, height);
+//       rect(rectArray[i],230+offset, rectWidth, height);
 
-      fill(k2);
-      text(round(100*category_data.get(i,k+1))+'%', rectArray[i]+0.35*rectWidth, 230+offset + 0.67*height);
-      offset += height;
-    }
+//       fill(k2);
+//       text(round(100*category_data.get(i,k+1))+'%', rectArray[i]+0.35*rectWidth, 230+offset + 0.67*height);
+//       offset += height;
+//     }
+    colorMode(RGB, 100);
+    fill(100,0,0,15);
+    ellipse(465,270,90,90)
+    fill(0,100,0,15);
+    ellipse(440,320,90,90)
+    fill(0,0,100,15);
+    ellipse(500,320,90,90)
+    fill(0)
+    text(ellipse_data.get(0,'crime'),460,260)
+    text(ellipse_data.get(0,'mental'),415,335)
+    text(ellipse_data.get(0,'unemployment'),510,335)
+    text(ellipse_data.get(0,'crime_mental'),436,295)
+    text(ellipse_data.get(0,'crime_unemployment'),485,293)
+    text(ellipse_data.get(0,'mental_unemployment'),463,335)
+    text(ellipse_data.get(0,'INTERSECTION'),463,308)
   }
 
   let mouseOnBox = false;
@@ -264,7 +281,7 @@ function mouseClicked() {
        mouseY < (220 + rectHeight)){
 
         state = i;
-        //cursor('grab');
+        cursor('grab');
         onBox = true;
         drug_name = data.get(i+1, 'drug')
         break;
@@ -272,7 +289,6 @@ function mouseClicked() {
    }
   if(!onBox){
     state = -1;
-    //cursor(ARROW)
     drug_name= ''
   }
 }
