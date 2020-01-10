@@ -4,6 +4,7 @@ let drug_name;
 let canvasWidth = 1450;
 let canvasHeight = 750;
 let scaling = 6;
+let rect_scaling = 0.5;
 let rectWidth = 120;
 let rectHeight = 150;
 
@@ -198,6 +199,8 @@ function draw() {
       text(values[5]+"%",95+(i*240),350)
       text(values[6]+"%",95+(i*240),310)
     }
+    rect(210+(i*240), 400-rect_scaling*ellipse_data.get(i,'UNION'), 10, rect_scaling*ellipse_data.get(i,'UNION'));
+
   }
 
   let mouseOnBox = false;
@@ -339,12 +342,17 @@ function draw() {
 function mouseClicked() {
 
   let onBox = false;
-  for(let i=0;i<=4;i++) {
-    if(mouseX > (rectArray[i]) &&
-       mouseX < (rectArray[i] + rectWidth) &&
-       mouseY > (220) &&
-       mouseY < (220 + rectHeight)){
+ 
 
+  for(let i=0;i<=4;i++) {
+    // if(mouseX > (rectArray[i]) &&
+    //    mouseX < (rectArray[i] + rectWidth) &&
+    //    mouseY > (220) &&
+    //    mouseY < (220 + rectHeight)){
+    if(((mouseX-(100+i*240))**2 + (mouseY-260)**2 <= 60**2) ||
+       ((mouseX-(60+i*240))**2 + (mouseY-330)**2 <= 60**2) ||
+       ((mouseX-(140+i*240))**2 + (mouseY-330)**2 <= 60**2)
+      ){
         state = i;
         cursor('grab');
         onBox = true;
