@@ -28,12 +28,12 @@ let age_legend = ['18-25 years', '26-34 years','35-49 years', '50+ years']
 
 let fileNames = ['marijuana_category.csv', 'cocaine_category.csv', 'heroin_category.csv', 'hallucinogen_category.csv', 'methamphetamine_category.csv']
 function preload() {
-  total_data = loadTable('drug/real_data.csv','csv','header')
+  total_data = loadTable('data/real_data.csv','csv','header')
 
-  affected_data = loadTable('drug/ellipse_data.csv', 'csv', 'header')
+  affected_data = loadTable('data/ellipse_data.csv', 'csv', 'header')
 
   for(let drug=0;  drug<=4;drug++){
-    drug_data[drug] = loadTable('drug/'+fileNames[drug], 'csv', 'header')
+    drug_data[drug] = loadTable('data/'+fileNames[drug], 'csv', 'header')
   }
 }
 
