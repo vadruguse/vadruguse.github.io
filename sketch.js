@@ -6,7 +6,12 @@ let hover_position = [];
 let drugArrays = []; // 3-dimentional array for plotting venn diagram
 let age_chart_state = -1;
 let drawCrosses = false
-let main_toggle_state = 1;
+let main_toggle_state = 2;
+let v3_toggle_state = 0;
+let drug;
+let drug_users;
+let drug_addicts;
+let addicted_to_total;
 
 let canvasWidth = 1450;
 let canvasHeight = 1000;
@@ -25,6 +30,11 @@ let v2_toggle_x_position = 200;
 let v2_toggle_y_position = 200;
 let category_venn_position = 600;
 let category_venn_y_position = 700;
+let v3_toggle_x_position = 260;
+let v3_toggle_y_position = 230;
+let drug_toggle_offset = 130;
+let v3_drug_venn_x_position = 350
+let v3_drug_venn_y_position = 400
 
 // Color
 let age_chart_color = ['#00FF00', 'yellow', '#D2691E', '#7FFFD4']
@@ -120,10 +130,10 @@ function category_wise_statistics() {
   textSize(14);
   for(i=0; i<5;i++){
 
-    let drug = total_data.get(i+1, 'drug')
-    let drug_users = total_data.get(i+1,'total_users')
-    let drug_addicts = total_data.get(i+1,'addicted_users')
-    let addicted_to_total = round((drug_addicts/drug_users) * 100)
+    drug = total_data.get(i+1, 'drug')
+    drug_users = total_data.get(i+1,'total_users')
+    drug_addicts = total_data.get(i+1,'addicted_users')
+    addicted_to_total = round((drug_addicts/drug_users) * 100)
 
     if(i<=1) {
     venn_x_position = category_venn_position;
@@ -239,8 +249,94 @@ function category_wise_statistics() {
 
 
 function age_wise_statistics() {
-    text('H3', 330,300)
+  fill(120)
+  for(let i=0; i<=4;i++){
+    rect(v3_toggle_x_position+(i*drug_toggle_offset), v3_toggle_y_position, drug_toggle_offset, 40)
+  }
+  fill(0)
+  text('Marijuana', (v3_toggle_x_position+10), (v3_toggle_y_position+25))
+  text('Cocaine', (v3_toggle_x_position+drug_toggle_offset+10), (v3_toggle_y_position+25))
+  text('Heroin', (v3_toggle_x_position+2*drug_toggle_offset+10), (v3_toggle_y_position+25))
+  text('Hallucinogen', (v3_toggle_x_position+3*drug_toggle_offset+10), (v3_toggle_y_position+25))
+  text('Methamphetamine', (v3_toggle_x_position+4*drug_toggle_offset+10), (v3_toggle_y_position+25))
+
+    drug = total_data.get(v3_toggle_state+1, 'drug')
+    drug_users = total_data.get(v3_toggle_state+1,'total_users')
+    drug_addicts = total_data.get(v3_toggle_state+1,'addicted_users')
+    addicted_to_total = round((drug_addicts/drug_users) * 100)
+
+    //write drug name below
+    fill(0);
+    text(drug,(v3_drug_venn_x_position-35),(v3_drug_venn_y_position+310));
+
+    // outer circle
+    let c1 = color('#008000');
+    fill(c1);
+    t = (log(drug_users)) * total_circle_scaling;
+    // hover_position[i] = t;
+    circle(v3_drug_venn_x_position,v3_drug_venn_y_position,t);
+
+    // inner circle
+    let c2 = color('white');
+    fill(c2);
+    r = t*((drug_addicts/drug_users) **0.5);
+    circle(v3_drug_venn_x_position,v3_drug_venn_y_position,r);
+
+    let values = [affected_data.get(v3_toggle_state,'crime'),
+                affected_data.get(v3_toggle_state,'mental'),
+                affected_data.get(v3_toggle_state,'unemployment'),
+                affected_data.get(v3_toggle_state,'crime_mental'),
+                affected_data.get(v3_toggle_state,'crime_unemployment'),
+                affected_data.get(v3_toggle_state,'mental_unemployment'),
+                affected_data.get(v3_toggle_state,'INTERSECTION')];
+    let affected_data_union = affected_data.get(v3_toggle_state,'UNION');
+
+    colorMode(RGB, 100);
+    fill(100,0,0,15);
+    ellipse(v3_drug_venn_x_position,(v3_drug_venn_y_position+120),150,150)
+    fill(0,100,0,15);
+    ellipse((v3_drug_venn_x_position-40),(v3_drug_venn_y_position+210),150,150)
+    fill(0,0,100,15);
+    ellipse((v3_drug_venn_x_position+40),(v3_drug_venn_y_position+210),150,150)
+    fill(0)
+
+    text(values[0],(v3_drug_venn_x_position-10),(v3_drug_venn_y_position+90))
+    text(values[1],(v3_drug_venn_x_position-90),(v3_drug_venn_y_position+ 240))
+    text(values[2],(v3_drug_venn_x_position+70),(v3_drug_venn_y_position+ 240))
+    text(values[3],(v3_drug_venn_x_position-50),(v3_drug_venn_y_position+ 160))
+    text(values[4],(v3_drug_venn_x_position+35),(v3_drug_venn_y_position+ 160))
+    text(values[5],(v3_drug_venn_x_position-10),(v3_drug_venn_y_position+ 240))
+    text(values[6],(v3_drug_venn_x_position-10),(v3_drug_venn_y_position+ 180))
+
+
+  let age_chart_offset = 200;
+  fill(0)
+  textSize(20);
+  text(drug + ' addiction statistics on specific population age demographies', (v3_drug_venn_x_position+age_chart_offset), v3_drug_venn_y_position)
+
+  textSize(14);
+  line(v3_drug_venn_x_position+300,v3_drug_venn_y_position+20, v3_drug_venn_x_position+300, v3_drug_venn_y_position+160)
+  for(let cat=0;cat<=2;cat++) {
+    let x = (v3_drug_venn_x_position+250);
+    let y = v3_drug_venn_y_position + 30 + cat * 40
+    fill(0);
+    text(age_chart_category[cat], x-50, y+25)
+    for(let age=0;age<=3;age++) {
+      let agecolor = color(age_chart_color[age]);
+      agecolor.setAlpha(200);
+      fill(agecolor)
+
+      let width = age_chart_rectangle_position[2]*drugArrays[v3_toggle_state][cat][age]
+      rect(x+50,y+5,width,age_chart_rectangle_position[3]-20)
+      if(drugArrays[v3_toggle_state][cat][age]>0.05){
+        fill(1);
+        text(round(100*drugArrays[v3_toggle_state][cat][age])+'%', x+45+0.35*width, y+25);
+      }
+      x+=width
+    }
+  }
 }
+
 // function draw() {
 //   background('#FFFAFA');
 
@@ -495,36 +591,14 @@ function mouseClicked() {
   else if(mouseX>=v2_toggle_x_position+80 && mouseX <= v2_toggle_x_position+160 && mouseY>=v2_toggle_y_position && mouseY<=v2_toggle_y_position+20){
       drawCrosses = true;
   }
+
+  for(let i=0;i<=4;i++){
+    if(mouseX > (v3_toggle_x_position+(i*drug_toggle_offset)) &&
+       mouseX < (v3_toggle_x_position+((i+1)*drug_toggle_offset)) &&
+       mouseY > v3_toggle_y_position &&
+       mouseY < (v3_toggle_y_position + 40)){
+      v3_toggle_state=i;
+      break;
+    }
+  }
 }
-// function mouseClicked() {
-
-//   let onBox = false;
-
-
-//   for(let i=0;i<=4;i++) {
-//     // if(mouseX > (rectArray[i]) &&
-//     //    mouseX < (rectArray[i] + rectWidth) &&
-//     //    mouseY > (220) &&
-//     //    mouseY < (220 + rectHeight)){
-//     if(((mouseX-(100+i*240))**2 + (mouseY-260)**2 <= 60**2) ||
-//        ((mouseX-(60+i*240))**2 + (mouseY-330)**2 <= 60**2) ||
-//        ((mouseX-(140+i*240))**2 + (mouseY-330)**2 <= 60**2)
-//       ){
-//         age_chart_state = i;
-//         cursor('grab');
-//         onBox = true;
-//         drug_name = total_data.get(i+1, 'drug')
-//         break;
-//      }
-//    }
-//   if(!onBox){
-//     age_chart_state = -1;
-//     drug_name= ''
-//   }
-//   if(mouseX>=10 && mouseX <= 50 && mouseY>=100 && mouseY<=120){
-//       drawCrosses = false;
-//   }
-//   else if(mouseX>=50 && mouseX <= 90 && mouseY>=100 && mouseY<=120){
-//       drawCrosses = true;
-//   }
-// }
