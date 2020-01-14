@@ -3,12 +3,14 @@ let affected_data;
 let drug_data = [];
 let drug_age_data = [];
 let drug_name;
-let hover_position = [];
+let hover_position_x = [];
+let hover_position_y = [];
+let hover_diameter = [];
 let drugArrays = []; // 3-dimentional array for plotting venn diagram
 let  drugAgeArray = [];
 let age_chart_state = -1;
 let drawCrosses = false
-let main_toggle_state = 1;
+let main_toggle_state = 0;
 let v3_toggle_state = 0;
 let drug;
 let drug_users;
@@ -112,8 +114,16 @@ function draw() {
   text('Some random explanatory text', 120, 80)
   line(110,90,canvasWidth-110,90)
 
-  fill(180)
+  let k1 = color(180)//fill(180)
+
   for(let i=0; i<=2;i++){
+    if(main_toggle_state!=i){
+      k1.setAlpha(200)
+    }
+    else{
+      k1.setAlpha(10) 
+    }
+    fill(k1)
     rect(main_toggle_x_position[i], main_toggle_y_position, 150, 40)
   }
   fill(0)
@@ -228,86 +238,89 @@ function category_wise_statistics() {
   fill(0);
   textSize(14);
   for(i=0; i<5;i++){
-    drug = total_data.get(i+1, 'drug')
-    drug_users = total_data.get(i+1,'total_users')
-    drug_addicts = total_data.get(i+1,'addicted_users')
-    addicted_to_total = round((drug_addicts/drug_users) * 100)
+        drug = total_data.get(i+1, 'drug')
+        drug_users = total_data.get(i+1,'total_users')
+        drug_addicts = total_data.get(i+1,'addicted_users')
+        addicted_to_total = round((drug_addicts/drug_users) * 100)
 
-    if(i<=1) {
-    venn_x_position = category_venn_position;
-    venn_y_position = category_venn_y_position;
-    drug_name_x_position = drug_name_position;
-    drug_name_y_position = 495;
-    total_y_position = total_n_addicted_y_position;
-  } else {
-    venn_x_position = 10;
-    venn_y_position = 1000;
-    drug_name_x_position = -30;
-    drug_name_y_position = 795;
-    total_y_position = 560;
-  }
+        if(i<=1) {
+          venn_x_position = category_venn_position;
+          venn_y_position = category_venn_y_position;
+          drug_name_x_position = drug_name_position;
+          drug_name_y_position = 495;
+          total_y_position = total_n_addicted_y_position;
+        } 
+        else {
+          venn_x_position = 10;
+          venn_y_position = 1000;
+          drug_name_x_position = -30;
+          drug_name_y_position = 795;
+          total_y_position = 560;
+      }
 
-    //write drug name below
-    fill(0);
-    text(drug,(drug_name_x_position+(i*240)),drug_name_y_position);
+        //write drug name below
+        fill(0);
+        text(drug,(drug_name_x_position+(i*240)),drug_name_y_position);
 
-    // outer circle
-    let c1 = color('#008000');
-    fill(c1);
-    t = (log(drug_users)) * total_circle_scaling;
-    hover_position[i] = t;
-    circle(total_n_addicted_circle_position[i],total_y_position,t);
+        // outer circle
+        let c1 = color('#008000');
+        fill(c1);
+        t = (log(drug_users)) * total_circle_scaling;
+        hover_position_x[i] = total_n_addicted_circle_position[i];
+        hover_position_y[i] = total_y_position;
+        hover_diameter[i] = t
+        circle(total_n_addicted_circle_position[i],total_y_position,t);
 
-    // inner circle
-    let c2 = color('white');
-    fill(c2);
-    r = t*((drug_addicts/drug_users) **0.5);
-    circle(total_n_addicted_circle_position[i],total_y_position,r);
+        // inner circle
+        let c2 = color('white');
+        fill(c2);
+        r = t*((drug_addicts/drug_users) **0.5);
+        circle(total_n_addicted_circle_position[i],total_y_position,r);
 
-    let values = [affected_data.get(i,'crime'),
-                  affected_data.get(i,'mental'),
-                  affected_data.get(i,'unemployment'),
-                  affected_data.get(i,'crime_mental'),
-                  affected_data.get(i,'crime_unemployment'),
-                  affected_data.get(i,'mental_unemployment'),
-                  affected_data.get(i,'INTERSECTION')];
-    let affected_data_union = affected_data.get(i,'UNION');
+        let values = [affected_data.get(i,'crime'),
+                      affected_data.get(i,'mental'),
+                      affected_data.get(i,'unemployment'),
+                      affected_data.get(i,'crime_mental'),
+                      affected_data.get(i,'crime_unemployment'),
+                      affected_data.get(i,'mental_unemployment'),
+                      affected_data.get(i,'INTERSECTION')];
+        let affected_data_union = affected_data.get(i,'UNION');
 
-  if(!drawCrosses){
-      fill(v2_venn_chart_color[0]);
-      ellipse(venn_x_position+(i*240),(venn_y_position-350),120,120)
-      fill(v2_venn_chart_color[1]);
-      ellipse((venn_x_position-40)+(i*240),(venn_y_position-280),120,120)
-      fill(v2_venn_chart_color[2]);
-      ellipse((venn_x_position+40)+(i*240),(venn_y_position-280),120,120)
-      fill(0)
+      if(!drawCrosses){
+          fill(v2_venn_chart_color[0]);
+          ellipse(venn_x_position+(i*240),(venn_y_position-350),120,120)
+          fill(v2_venn_chart_color[1]);
+          ellipse((venn_x_position-40)+(i*240),(venn_y_position-280),120,120)
+          fill(v2_venn_chart_color[2]);
+          ellipse((venn_x_position+40)+(i*240),(venn_y_position-280),120,120)
+          fill(0)
 
-      text(values[0],(venn_x_position-10)+(i*240),(venn_y_position-370))
-      text(values[1],(venn_x_position-70)+(i*240),(venn_y_position-250))
-      text(values[2],(venn_x_position+50)+(i*240),(venn_y_position-250))
-      text(values[3],(venn_x_position-40)+(i*240),(venn_y_position-310))
-      text(values[4],(venn_x_position+25)+(i*240),(venn_y_position-310))
-      text(values[5],(venn_x_position-5)+(i*240),(venn_y_position-250))
-      text(values[6],(venn_x_position-5)+(i*240),(venn_y_position-300))
-    }
-    else{
-      fill(v2_venn_chart_color[0]);
-      ellipse(venn_x_position+(i*240),(venn_y_position-350),120,120)
-      fill(v2_venn_chart_color[1]);
-      ellipse((venn_x_position-40)+(i*240),(venn_y_position-280),120,120)
-      fill(v2_venn_chart_color[2]);
-      ellipse((venn_x_position+40)+(i*240),(venn_y_position-280),120,120)
-      fill(0)
-      text(round(100*values[0]/affected_data_union)+"%",(venn_x_position-10)+(i*240),(venn_y_position-370))
-      text(round(100*values[1]/affected_data_union)+"%",(venn_x_position-70)+(i*240),(venn_y_position-250))
-      text(round(100*values[2]/affected_data_union)+"%",(venn_x_position+50)+(i*240),(venn_y_position-250))
-      text(round(100*values[3]/affected_data_union)+"%",(venn_x_position-40)+(i*240),(venn_y_position-310))
-      text(round(100*values[4]/affected_data_union)+"%",(venn_x_position+25)+(i*240),(venn_y_position-310))
-      text(round(100*values[5]/affected_data_union)+"%",(venn_x_position-5)+(i*240),(venn_y_position-250))
-      text(round(100*values[6]/affected_data_union)+"%",(venn_x_position-5)+(i*240),(venn_y_position-300))
-    }
+          text(values[0],(venn_x_position-10)+(i*240),(venn_y_position-370))
+          text(values[1],(venn_x_position-70)+(i*240),(venn_y_position-250))
+          text(values[2],(venn_x_position+50)+(i*240),(venn_y_position-250))
+          text(values[3],(venn_x_position-40)+(i*240),(venn_y_position-310))
+          text(values[4],(venn_x_position+25)+(i*240),(venn_y_position-310))
+          text(values[5],(venn_x_position-5)+(i*240),(venn_y_position-250))
+          text(values[6],(venn_x_position-5)+(i*240),(venn_y_position-300))
+        }
+        else{
+          fill(v2_venn_chart_color[0]);
+          ellipse(venn_x_position+(i*240),(venn_y_position-350),120,120)
+          fill(v2_venn_chart_color[1]);
+          ellipse((venn_x_position-40)+(i*240),(venn_y_position-280),120,120)
+          fill(v2_venn_chart_color[2]);
+          ellipse((venn_x_position+40)+(i*240),(venn_y_position-280),120,120)
+          fill(0)
+          text(round(100*values[0]/affected_data_union)+"%",(venn_x_position-10)+(i*240),(venn_y_position-370))
+          text(round(100*values[1]/affected_data_union)+"%",(venn_x_position-70)+(i*240),(venn_y_position-250))
+          text(round(100*values[2]/affected_data_union)+"%",(venn_x_position+50)+(i*240),(venn_y_position-250))
+          text(round(100*values[3]/affected_data_union)+"%",(venn_x_position-40)+(i*240),(venn_y_position-310))
+          text(round(100*values[4]/affected_data_union)+"%",(venn_x_position+25)+(i*240),(venn_y_position-310))
+          text(round(100*values[5]/affected_data_union)+"%",(venn_x_position-5)+(i*240),(venn_y_position-250))
+          text(round(100*values[6]/affected_data_union)+"%",(venn_x_position-5)+(i*240),(venn_y_position-300))
+        }
 
-    rect((venn_x_position+110)+(i*240), (venn_y_position-220)-rect_scaling*affected_data.get(i,'UNION'), 10, rect_scaling*affected_data.get(i,'UNION'));
+        rect((venn_x_position+110)+(i*240), (venn_y_position-220)-rect_scaling*affected_data.get(i,'UNION'), 10, rect_scaling*affected_data.get(i,'UNION'));
   }
 
   //legend
@@ -346,6 +359,7 @@ function category_wise_statistics() {
 
   //Interaction hover
   let mouseOnBox = false;
+  
   // This is for tooltip
   for(let j=0; j<5;j++){
 
@@ -353,27 +367,27 @@ function category_wise_statistics() {
     let drug_addicts = total_data.get(j+1,'addicted_users')
     let addicted_to_total = round((drug_addicts/drug_users) * 100)
 
-    if((mouseX-total_n_addicted_circle_position[j])**2 +
-       (mouseY-250)**2 <= (hover_position[j]/2)**2) {
+    if((mouseX-hover_position_x[j])**2 +
+       (mouseY-hover_position_y[j])**2 <= (hover_diameter[j]/2)**2) {
       mouseOnBox = true;
       fill(255);
-      if(j==4){
+      // if(j==4){
+      //   fill(255);
+      //   rect(total_n_addicted_circle_position[j] ,hover_position_y[j],160,90);
+      //   fill(1);
+      //   text(('Drug: ' + total_data.get(j+1,'drug')), total_n_addicted_circle_position[j]-5,hover_position_y[j]);
+      //   text(('# drug users: ' + drug_users), total_n_addicted_circle_position[j] - 5,hover_position_y[j]);
+      //   text(('# drug addicts: ' + drug_addicts), total_n_addicted_circle_position[j]-5,hover_position_y[j]);
+      //   text(('% of addicts: ' + addicted_to_total + '%'), total_n_addicted_circle_position[j]-5,hover_position_y[j]);
+      // } else {
         fill(255);
-        rect(0.99*total_n_addicted_circle_position[j] ,total_n_addicted_y_position,160,90);
+        rect((total_n_addicted_circle_position[j]-130),(hover_position_y[j]-90),130,90);
         fill(1);
-        text(('Drug: ' + total_data.get(j+1,'drug')), total_n_addicted_circle_position[j]-5,110);
-      text(('# drug users: ' + drug_users), total_n_addicted_circle_position[j] - 5,130);
-      text(('# drug addicts: ' + drug_addicts), total_n_addicted_circle_position[j]-5,150);
-      text(('% of addicts: ' + addicted_to_total + '%'), total_n_addicted_circle_position[j]-5,170);
-      } else {
-        fill(255);
-        rect((total_n_addicted_circle_position[j]-130),(total_n_addicted_y_position-90),130,90);
-        fill(1);
-        text(('Drug: ' + total_data.get(j+1,'drug')), (total_n_addicted_circle_position[j]-125),(total_n_addicted_y_position-75));
-      text(('# drug users: ' + drug_users), (total_n_addicted_circle_position[j]-125),(total_n_addicted_y_position-55));
-      text(('# drug addicts: ' + drug_addicts), (total_n_addicted_circle_position[j]-125),(total_n_addicted_y_position-35));
-      text(('% of addicts: ' + addicted_to_total + '%'), (total_n_addicted_circle_position[j]-125),(total_n_addicted_y_position-15));
-      }
+        text(('Drug: ' + total_data.get(j+1,'drug')), (total_n_addicted_circle_position[j]-125),(hover_position_y[j]-75));
+        text(('# drug users: ' + drug_users), (total_n_addicted_circle_position[j]-125),(hover_position_y[j]-55));
+        text(('# drug addicts: ' + drug_addicts), (total_n_addicted_circle_position[j]-125),(hover_position_y[j]-35));
+        text(('% of addicts: ' + addicted_to_total + '%'), (total_n_addicted_circle_position[j]-125),(hover_position_y[j]-15));
+      // }
     }
   }
 
@@ -382,8 +396,15 @@ function category_wise_statistics() {
 
 
 function age_wise_statistics() {
-  fill(120)
+  let k1 = color(120)
   for(let i=0; i<=4;i++){
+    if(v3_toggle_state!=i){
+      k1.setAlpha(200)
+    }
+    else{
+      k1.setAlpha(10) 
+    }
+    fill(k1)  
     rect(v3_toggle_x_position+(i*drug_toggle_offset), v3_toggle_y_position, drug_toggle_offset, 40)
   }
   fill(0)
