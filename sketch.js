@@ -1,9 +1,11 @@
 let total_data;
 let affected_data;
 let drug_data = [];
+let drug_age_data = [];
 let drug_name;
 let hover_position = [];
 let drugArrays = []; // 3-dimentional array for plotting venn diagram
+let  drugAgeArray = [];
 let age_chart_state = -1;
 let drawCrosses = false
 let main_toggle_state = 2;
@@ -35,23 +37,39 @@ let v3_toggle_y_position = 230;
 let drug_toggle_offset = 130;
 let v3_drug_venn_x_position = 350
 let v3_drug_venn_y_position = 400
+let v1_bar_chart_x_position = 400
+let v1_bar_chart_y_position = 180
+let v1_drug_name_x_scaling = [70,60,53,90,120]
+let v1_pie_x_position = 600
+let v1_pie_y_position = 730
+let v1_pie_data_x_position = [-60,70,80,10,-60]
+let v1_pie_data_y_position = [-70,-70,30,70,30]
+
 
 // Color
 let age_chart_color = ['#00FF00', 'yellow', '#D2691E', '#7FFFD4']
 
 
 let age_chart_category = ['Crime', 'Mental Health', 'Unemployment']
+let age_below_chart_category = ['Affected users', 'Addicted users', 'Total users']
 let age_legend = ['18-25 years', '26-34 years','35-49 years', '50+ years']
 
 
-let fileNames = ['marijuana_category.csv', 'cocaine_category.csv', 'heroin_category.csv', 'hallucinogen_category.csv', 'methamphetamine_category.csv']
+let drugCategoryFileNames = ['marijuana_category.csv', 'cocaine_category.csv', 'heroin_category.csv', 'hallucinogen_category.csv', 'methamphetamine_category.csv']
+let drugAgeFileNames = ['marijuana_age.csv', 'cocaine_age.csv', 'heroin_age.csv', 'hallucinogen_age.csv', 'methamphetamine_age.csv']
 function preload() {
   total_data = loadTable('data/real_data.csv','csv','header')
 
   affected_data = loadTable('data/ellipse_data.csv', 'csv', 'header')
 
+  total_age_data = loadTable('data/total_age_data.csv', 'csv', 'header')
+
   for(let drug=0;  drug<=4;drug++){
-    drug_data[drug] = loadTable('data/'+fileNames[drug], 'csv', 'header')
+    drug_data[drug] = loadTable('data/'+drugCategoryFileNames[drug], 'csv', 'header')
+  }
+
+  for(let drug=0;  drug<=4;drug++){
+    drug_age_data[drug] = loadTable('data/'+drugAgeFileNames[drug], 'csv', 'header')
   }
 }
 
@@ -68,6 +86,15 @@ function setup() {
         drugArrays[drug][cat]=[]
         for(let age=0;age<=3;age++) {
           drugArrays[drug][cat][age] = drug_data[drug].get(cat, age+1)
+        }
+      }
+  }
+  for(let drug=0;drug<=4;drug++) {
+      drugAgeArray[drug] = [];
+      for(let cat=0;cat<=2;cat++){
+        drugAgeArray[drug][cat]=[]
+        for(let age=0;age<=3;age++) {
+          drugAgeArray[drug][cat][age] = drug_age_data[drug].get(cat, age+1)/100
         }
       }
   }
@@ -108,9 +135,79 @@ function draw() {
 }
 
 function overall_statistics() {
-  text('H1', 300,300)
+
+  line(v1_bar_chart_x_position, v1_bar_chart_y_position+30, v1_bar_chart_x_position, v1_bar_chart_y_position+310)
+  line(v1_bar_chart_x_position+650, v1_bar_chart_y_position+30, v1_bar_chart_x_position+650, v1_bar_chart_y_position+310)
+  line(v1_bar_chart_x_position, v1_bar_chart_y_position+30, v1_bar_chart_x_position+650, v1_bar_chart_y_position+30)
+  line(v1_bar_chart_x_position, v1_bar_chart_y_position+310, v1_bar_chart_x_position+650, v1_bar_chart_y_position+310)
+
+
+  let scaling = 5
+  let drug_name_y_scaling = 14
+  for(let i=0; i<=4;i++){
+    let total_users = total_data.get(i+1,"total_users");
+    let addicted_users = total_data.get(i+1,"addicted_users")
+    if(total_users<500){
+      let addicted_width = round((addicted_users/total_users)*total_users)
+      fill(0)
+      rect(v1_bar_chart_x_position, v1_bar_chart_y_position+((i+1)*50), total_users,30)
+      fill(255)
+      rect(v1_bar_chart_x_position, v1_bar_chart_y_position+ ((i+1)*50), addicted_width,30)
+      fill(0)
+      text(round((addicted_users/total_users)*100)+"%", v1_bar_chart_x_position+addicted_width/2, v1_bar_chart_y_position+((i+1)*54+drug_name_y_scaling))
+      // print(total_users)
+      // text(total_users, (v1_bar_chart_x_position+total_users+10), v1_bar_chart_y_position+((i+1)*54+drug_name_y_scaling))
+
+    }else if(total_users>5000){
+      let scaling = 17
+      let addicted_width=  round((addicted_users/scaling)/(total_users/scaling)*(total_users/scaling))
+      fill(0)
+      rect(v1_bar_chart_x_position, v1_bar_chart_y_position+((i+1)*50), total_users/scaling,30)
+      fill(255)
+      rect(v1_bar_chart_x_position, v1_bar_chart_y_position+ ((i+1)*50), addicted_width,30)
+      fill(0)
+      text(round((addicted_users/scaling)/(total_users/scaling)*100)+"%", v1_bar_chart_x_position+addicted_width/3, v1_bar_chart_y_position+((i+1)*54+drug_name_y_scaling))
+
+    } else{
+      let scaling = 3
+      let addicted_width= round(((addicted_users/scaling)/(total_users/scaling))*(total_users/scaling))
+      fill(0)
+      rect(v1_bar_chart_x_position, v1_bar_chart_y_position+((i+1)*50), total_users/scaling,30)
+      fill(255)
+      rect(v1_bar_chart_x_position, v1_bar_chart_y_position+ ((i+1)*50), addicted_width,30)
+      fill(0)
+              text(round((addicted_users/scaling)/(total_users/scaling)*100)+"%", v1_bar_chart_x_position+addicted_width/2-5, v1_bar_chart_y_position+((i+1)*54+drug_name_y_scaling))
+    }
+    drug_name_y_scaling-=3
+  }
+  drug_name_y_scaling=14
+  fill(0)
+  for(let i=0;i<=4;i++){
+    let drug_name = total_data.get(i+1,"drug")
+    text(drug_name, v1_bar_chart_x_position-v1_drug_name_x_scaling[i], v1_bar_chart_y_position+(i+1)*54+drug_name_y_scaling)
+    drug_name_y_scaling-=3
+  }
+
+  let total_users = int(total_age_data.get(0,"12-17"))+int(total_age_data.get(0,"18-25"))+int(total_age_data.get(0,"26-34"))+int(total_age_data.get(0,"35-49"))+int(total_age_data.get(0,"50+"))
+
+  let angles=[round(int(total_age_data.get(0,"12-17"))/total_users*100), round(int(total_age_data.get(0,"18-25"))/total_users*100), round(int(total_age_data.get(0,"26-34"))/total_users*100), round(int(total_age_data.get(0,"35-49"))/total_users*100), round(int(total_age_data.get(0,"50+"))/total_users*100)]
+
+  pieChart(250,angles)
+  fill(0)
 }
 
+function pieChart(diameter, data) {
+  var sum = 0;
+  for (let i = 0; i < data.length; i++) sum += data[i];
+  var range = 2.0 * PI / sum;
+  var lastAngle = 0;
+  for (let i = 0; i < data.length; i++) {
+    fill(map(i, 0, data.length, 0, 255));
+    arc(v1_pie_x_position, v1_pie_y_position, diameter, diameter, lastAngle, lastAngle += data[i] * range );
+    fill(255)
+    text(data[i]+"%",v1_pie_x_position-v1_pie_data_x_position[i], v1_pie_y_position-v1_pie_data_y_position[i])
+  }
+}
 
 function category_wise_statistics() {
   if(drawCrosses){
@@ -214,6 +311,8 @@ function category_wise_statistics() {
     rect((venn_x_position+110)+(i*240), (venn_y_position-220)-rect_scaling*affected_data.get(i,'UNION'), 10, rect_scaling*affected_data.get(i,'UNION'));
   }
 
+  colorMode(RGB, 255)
+
   let mouseOnBox = false;
   // This is for tooltip
   for(let j=0; j<5;j++){
@@ -308,6 +407,7 @@ function age_wise_statistics() {
     text(values[5],(v3_drug_venn_x_position-10),(v3_drug_venn_y_position+ 240))
     text(values[6],(v3_drug_venn_x_position-10),(v3_drug_venn_y_position+ 180))
 
+  colorMode(RGB, 255)
 
   let age_chart_offset = 200;
   fill(0)
@@ -335,6 +435,31 @@ function age_wise_statistics() {
       x+=width
     }
   }
+
+  let x_offset = 90
+  let width_offset = 0.8
+  for(let cat=0;cat<=2;cat++) {
+    let x = (v3_drug_venn_x_position+250);
+    let y = v3_drug_venn_y_position + 200 + cat * 40
+    fill(0);
+    text(age_below_chart_category[cat], x-50, y+25)
+    for(let age=0;age<=3;age++) {
+      let agecolor = color(age_chart_color[age]);
+      agecolor.setAlpha(200);
+      fill(agecolor)
+
+      let width = age_chart_rectangle_position[2]*drugAgeArray[v3_toggle_state][cat][age]
+      rect(x+x_offset,y+5,width_offset*width,age_chart_rectangle_position[3]-20)
+      if(drugAgeArray[v3_toggle_state][cat][age]>0.05){
+        fill(1);
+        text(round(100*drugAgeArray[v3_toggle_state][cat][age])+'%', x+(x_offset-5)+0.35*(width*width_offset), y+25);
+      }
+      x+=width_offset*width
+    }
+    width_offset+=0.1
+    x_offset-=20
+  }
+
 }
 
 // function draw() {
