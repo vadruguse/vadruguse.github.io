@@ -212,23 +212,22 @@ function pieChart(diameter, data) {
 }
 
 function category_wise_statistics() {
+
+  fill('hsba(190, 100%, 50%,1)');
+  rect(v2_toggle_x_position, v2_toggle_y_position, 80, 20,20);
   if(drawCrosses){
-    fill(100);
-    rect(v2_toggle_x_position, v2_toggle_y_position, 80, 20);
-    fill(0);
-    rect(v2_toggle_x_position+80, v2_toggle_y_position, 80, 20);
-  }
-  else{
-    fill(0);
-    rect(v2_toggle_x_position, v2_toggle_y_position, 80, 20);
-    fill(100);
-    rect(v2_toggle_x_position+80, v2_toggle_y_position, 80, 20);
+    fill('hsba(0, 100%, 50%)');
+    circle(v2_toggle_x_position+65, v2_toggle_y_position+10, 20)
+    text('#', v2_toggle_x_position+10,v2_toggle_y_position+15)
+  }else{
+    fill('hsba(0, 100%, 50%)');
+    circle(v2_toggle_x_position+15, v2_toggle_y_position+10, 20)
+    text('%', v2_toggle_x_position+60,v2_toggle_y_position+15)
   }
 
   fill(0);
   textSize(14);
   for(i=0; i<5;i++){
-
     drug = total_data.get(i+1, 'drug')
     drug_users = total_data.get(i+1,'total_users')
     drug_addicts = total_data.get(i+1,'addicted_users')
@@ -404,15 +403,13 @@ function age_wise_statistics() {
     text(drug,(v3_drug_venn_x_position-35),(v3_drug_venn_y_position+310));
 
     // outer circle
-    let c1 = color('#008000');
-    fill(c1);
+    fill(color('#008000'));
     t = (log(drug_users)) * total_circle_scaling;
     // hover_position[i] = t;
     circle(v3_drug_venn_x_position,v3_drug_venn_y_position,t);
 
     // inner circle
-    let c2 = color('white');
-    fill(c2);
+    fill(color('white'));
     r = t*((drug_addicts/drug_users) **0.5);
     circle(v3_drug_venn_x_position,v3_drug_venn_y_position,r);
 
@@ -511,10 +508,10 @@ function mouseClicked() {
     }
   }
 
-  if(mouseX>=v2_toggle_x_position && mouseX <= v2_toggle_x_position+80 && mouseY>=v2_toggle_y_position && mouseY<=v2_toggle_y_position+20){
+  if(mouseX>=v2_toggle_x_position+10 && mouseX <= v2_toggle_x_position+20 && mouseY>=v2_toggle_y_position && mouseY<=v2_toggle_y_position+20){
       drawCrosses = false;
   }
-  else if(mouseX>=v2_toggle_x_position+80 && mouseX <= v2_toggle_x_position+160 && mouseY>=v2_toggle_y_position && mouseY<=v2_toggle_y_position+20){
+  else if(mouseX>=v2_toggle_x_position+60 && mouseX <= v2_toggle_x_position+70 && mouseY>=v2_toggle_y_position && mouseY<=v2_toggle_y_position+20){
       drawCrosses = true;
   }
 
