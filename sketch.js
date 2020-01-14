@@ -8,7 +8,7 @@ let drugArrays = []; // 3-dimentional array for plotting venn diagram
 let  drugAgeArray = [];
 let age_chart_state = -1;
 let drawCrosses = false
-let main_toggle_state = 0;
+let main_toggle_state = 1;
 let v3_toggle_state = 0;
 let drug;
 let drug_users;
@@ -47,8 +47,8 @@ let v1_pie_data_y_position = [-70,-70,30,70,30]
 
 
 // Color
-let age_chart_color = ['#00FF00', 'yellow', '#D2691E', '#7FFFD4']
-
+let age_chart_color = ['hsba(190, 100%, 50%,1)', 'hsba(190, 100%, 50%,0.65)', 'hsba(190, 100%, 50%,0.35)', 'hsba(190, 100%, 50%,0.05)']
+let v2_venn_chart_color = ['hsba(210, 20%, 100%,0.5)', 'hsba(100, 20%, 100%,0.5)', 'hsba(400, 20%, 100%,0.5)']
 
 let age_chart_category = ['Criminal', 'Mentally ill', 'Unemployed']
 let age_below_chart_category = ['Affected users', 'Addicted users', 'Total users']
@@ -275,12 +275,11 @@ function category_wise_statistics() {
     let affected_data_union = affected_data.get(i,'UNION');
 
   if(!drawCrosses){
-      colorMode(RGB, 100);
-      fill(100,0,0,15);
+      fill(v2_venn_chart_color[0]);
       ellipse(venn_x_position+(i*240),(venn_y_position-350),120,120)
-      fill(0,100,0,15);
+      fill(v2_venn_chart_color[1]);
       ellipse((venn_x_position-40)+(i*240),(venn_y_position-280),120,120)
-      fill(0,0,100,15);
+      fill(v2_venn_chart_color[2]);
       ellipse((venn_x_position+40)+(i*240),(venn_y_position-280),120,120)
       fill(0)
 
@@ -293,12 +292,11 @@ function category_wise_statistics() {
       text(values[6],(venn_x_position-5)+(i*240),(venn_y_position-300))
     }
     else{
-     colorMode(RGB, 100);
-      fill(100,0,0,15);
+      fill(v2_venn_chart_color[0]);
       ellipse(venn_x_position+(i*240),(venn_y_position-350),120,120)
-      fill(0,100,0,15);
+      fill(v2_venn_chart_color[1]);
       ellipse((venn_x_position-40)+(i*240),(venn_y_position-280),120,120)
-      fill(0,0,100,15);
+      fill(v2_venn_chart_color[2]);
       ellipse((venn_x_position+40)+(i*240),(venn_y_position-280),120,120)
       fill(0)
       text(round(100*values[0]/affected_data_union)+"%",(venn_x_position-10)+(i*240),(venn_y_position-370))
@@ -315,44 +313,39 @@ function category_wise_statistics() {
 
   //legend
   let legend_circle_y_position = 600
-  colorMode(RGB, 100);
-  fill(100,0,0,15);
+  fill(v2_venn_chart_color[0]);
   ellipse((i*230),legend_circle_y_position-70,50,50)
-  fill(0,100,0,15);
+  fill(v2_venn_chart_color[1]);
   ellipse(-20+(i*230),legend_circle_y_position-40,50,50)
-  fill(0,0,100,15);
+  fill(v2_venn_chart_color[2]);
   ellipse(20+(i*230),legend_circle_y_position-40,50,50)
-  stroke(0)
 
   let legend_line_y_position = legend_circle_y_position-10
   line(total_n_addicted_circle_position[total_n_addicted_circle_position.length-1]+180, legend_line_y_position-70, total_n_addicted_circle_position[total_n_addicted_circle_position.length-1]+250, legend_line_y_position-70)
     line(total_n_addicted_circle_position[total_n_addicted_circle_position.length-1]+210, legend_line_y_position-30, total_n_addicted_circle_position[total_n_addicted_circle_position.length-1]+250, legend_line_y_position-30)
     line(total_n_addicted_circle_position[total_n_addicted_circle_position.length-1]+165, legend_line_y_position+10, total_n_addicted_circle_position[total_n_addicted_circle_position.length-1]+250, legend_line_y_position+10)
     line(total_n_addicted_circle_position[total_n_addicted_circle_position.length-1]+165, legend_line_y_position-20, total_n_addicted_circle_position[total_n_addicted_circle_position.length-1]+165, legend_line_y_position+10)
-  fill(0)
+  fill(10)
   let legend_text_y_position = legend_circle_y_position-5
   text('Criminal', 1220, legend_text_y_position-70)
   text('Unemployed', 1220, legend_text_y_position-30)
   text('Mentally ill', 1220, legend_text_y_position+10)
 
     // legend for total users circle
-    let c1 = color('#008000');
-    fill(c1);
+    fill(color('#008000'));
     circle(total_n_addicted_circle_position[total_n_addicted_circle_position.length-1]+150,legend_circle_y_position-200,50);
 
     // legend for addicted users circle
-    let c2 = color('white');
-    fill(c2);
+    fill(color('white'));
     circle(total_n_addicted_circle_position[total_n_addicted_circle_position.length-1]+150,legend_circle_y_position-200,25);
 
-  stroke(1);
-  fill(1);    line(total_n_addicted_circle_position[total_n_addicted_circle_position.length-1]+135, legend_circle_y_position-210, total_n_addicted_circle_position[total_n_addicted_circle_position.length-1]+180, legend_circle_y_position-250);
+  fill(color('black'));
+  line(total_n_addicted_circle_position[total_n_addicted_circle_position.length-1]+135, legend_circle_y_position-210, total_n_addicted_circle_position[total_n_addicted_circle_position.length-1]+180, legend_circle_y_position-250);
     text('# of Drug Users on Log Scale', total_n_addicted_circle_position[total_n_addicted_circle_position.length-1]+185, legend_circle_y_position-250);
     line(total_n_addicted_circle_position[total_n_addicted_circle_position.length-1]+150, legend_circle_y_position-195, total_n_addicted_circle_position[total_n_addicted_circle_position.length-1]+180, legend_circle_y_position-175);
     text('Fraction of addicted drug users', total_n_addicted_circle_position[total_n_addicted_circle_position.length-1]+185, legend_circle_y_position-170);
 
   //Interaction hover
-  colorMode(RGB, 255)
   let mouseOnBox = false;
   // This is for tooltip
   for(let j=0; j<5;j++){
@@ -453,7 +446,7 @@ function age_wise_statistics() {
 
   let age_chart_offset = 200;
   fill(0)
-  textSize(20);
+  textSize(18);
   text(drug + ' addiction statistics on specific population age demographies', (v3_drug_venn_x_position+age_chart_offset), v3_drug_venn_y_position)
 
   textSize(14);
@@ -464,9 +457,7 @@ function age_wise_statistics() {
     fill(0);
     text(age_chart_category[cat], x-50, y+25)
     for(let age=0;age<=3;age++) {
-      let agecolor = color(age_chart_color[age]);
-      agecolor.setAlpha(200);
-      fill(agecolor)
+      fill(age_chart_color[age])
 
       let width = age_chart_rectangle_position[2]*drugArrays[v3_toggle_state][cat][age]
       rect(x+50,y+5,width,age_chart_rectangle_position[3]-20)
@@ -486,9 +477,7 @@ function age_wise_statistics() {
     fill(0);
     text(age_below_chart_category[cat], x-50, y+25)
     for(let age=0;age<=3;age++) {
-      let agecolor = color(age_chart_color[age]);
-      agecolor.setAlpha(200);
-      fill(agecolor)
+      fill(age_chart_color[age])
 
       let width = age_chart_rectangle_position[2]*drugAgeArray[v3_toggle_state][cat][age]
       rect(x+x_offset,y+5,width_offset*width,age_chart_rectangle_position[3]-20)
