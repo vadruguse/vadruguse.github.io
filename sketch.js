@@ -5,7 +5,7 @@ let drug_age_data = [];
 let drug_name;
 let hover_position = [];
 let drugArrays = []; // 3-dimentional array for plotting venn diagram
-let  drugAgeArray = [];
+let drugAgeArray = [];
 let age_chart_state = -1;
 let drawCrosses = false
 let main_toggle_state = 1;
