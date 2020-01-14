@@ -20,7 +20,7 @@ let hover_position_y = [];
 let hover_diameter = [];
 
 let canvasWidth = 1450;
-let canvasHeight = 1000;
+let canvasHeight = 950;
 let total_circle_scaling = 6;
 let rect_scaling = 0.5;
 
@@ -41,14 +41,17 @@ let v3_toggle_y_position = 230;
 let drug_toggle_offset = 130;
 let v3_drug_venn_x_position = 350
 let v3_drug_venn_y_position = 400
-let v1_bar_chart_x_position = 550
-let v1_bar_chart_y_position = 180
+let v1_bar_chart_x_position = 250
+let v1_bar_chart_y_position = 450
 let v1_drug_name_x_scaling = [53,43,38,70,95]
-let v1_pie_x_position = 400
-let v1_pie_y_position = 680
+let v1_pie_x_position = 1050
+let v1_pie_y_position = 310
 let v1_pie_data_x_position = [-60,70,80,10,-60]
 let v1_pie_data_y_position = [-70,-70,30,70,30]
-let v1_pie_chart_legend_position = 300
+let v1_pie_chart_legend_x_position = 930
+let v1_pie_chart_legend_y_position = 440
+let v1_bar_chart_legend_x_position = 1000;
+let v1_bar_chart_legend_y_position = 680;
 
 
 // Color
@@ -125,7 +128,7 @@ function draw() {
   k1= color('hsla(0, 0%, 25%, 1)')
   for(let i=0; i<=2;i++){
     if(main_toggle_state!=i){
-      k1.setAlpha(200)
+      k1.setAlpha(150)
     }
     else{
       k1.setAlpha(50)
@@ -133,10 +136,11 @@ function draw() {
     fill(k1)
     rect(main_toggle_x_position[i], main_toggle_y_position, 150, 40,5)
     fill(0)
-    text('Overall Statistics', 160,135)
-    text('Category-wise', 330, 125)
-    text('statistics', 350, 140)
-    text('Age-wise statistics', 460, 135)
+    textSize(13)
+    text('Overall statistics', 180,135)
+    text('Category-wise statistics', 315, 135)
+    text('Age-wise statistics', 480, 135)
+    textSize(14)
   }
 
   if(main_toggle_state==0) {
@@ -147,8 +151,8 @@ function draw() {
     age_wise_statistics();
   }
 
-  line(110, canvasHeight-130, canvasWidth-110, canvasHeight-130)
-  text('Key takeaways:',110, canvasHeight-110)
+  line(110, canvasHeight-140, canvasWidth-110, canvasHeight-140)
+  text('Key takeaways:',110, canvasHeight-120)
 }
 
 function overall_statistics() {
@@ -231,14 +235,35 @@ function overall_statistics() {
 
   let angles=[round(int(total_age_data.get(0,"12-17"))/total_users*100), round(int(total_age_data.get(0,"18-25"))/total_users*100), round(int(total_age_data.get(0,"26-34"))/total_users*100), round(int(total_age_data.get(0,"35-49"))/total_users*100), round(int(total_age_data.get(0,"50+"))/total_users*100)]
 
+  //legend for pie chart
+  text('Age-wise distribution of drug users in the US, 2017', v1_pie_chart_legend_x_position-20, v1_pie_chart_legend_y_position-260)
   pieChart(250,angles)
   for(let i=0;i<=4;i++){
     fill(pie_chart_color[i])
-    rect(v1_pie_chart_legend_position+(i*70),820,10,10)
+    rect(v1_pie_chart_legend_x_position+(i*70)-20,v1_pie_chart_legend_y_position,10,10)
     fill(0)
-    text(pie_chart_legend[i],v1_pie_chart_legend_position+(i*70)+12, 830)
+    text(pie_chart_legend[i],v1_pie_chart_legend_x_position+(i*70)-8, v1_pie_chart_legend_y_position+10)
+  }
+
+  //legend for bar chart
+  text('Total number of users for different drugs in the US for 2017', v1_bar_chart_x_position+120,v1_bar_chart_y_position+20)
+  for(let i=0;i<=1;i++){
+    fill(v1_bar_chart_color[i])
+    rect(v1_bar_chart_legend_x_position, v1_bar_chart_legend_y_position+20,140-(i*80),20)
   }
   fill(0)
+
+  line(v1_bar_chart_legend_x_position,v1_bar_chart_legend_y_position+60,v1_bar_chart_legend_x_position+140,v1_bar_chart_legend_y_position+60)
+  line(v1_bar_chart_legend_x_position,v1_bar_chart_legend_y_position+45,v1_bar_chart_legend_x_position,v1_bar_chart_legend_y_position+60)
+  line(v1_bar_chart_legend_x_position+140,v1_bar_chart_legend_y_position+45,v1_bar_chart_legend_x_position+140,v1_bar_chart_legend_y_position+60)
+  line(v1_bar_chart_legend_x_position,v1_bar_chart_legend_y_position,v1_bar_chart_legend_x_position+60,v1_bar_chart_legend_y_position)
+  line(v1_bar_chart_legend_x_position,v1_bar_chart_legend_y_position,v1_bar_chart_legend_x_position,v1_bar_chart_legend_y_position+15)
+  line(v1_bar_chart_legend_x_position+60,v1_bar_chart_legend_y_position,v1_bar_chart_legend_x_position+60,v1_bar_chart_legend_y_position+15)
+
+  text('# of drug users', v1_bar_chart_legend_x_position+30, v1_bar_chart_legend_y_position+75)
+  text('# of addicted users', v1_bar_chart_legend_x_position, v1_bar_chart_legend_y_position-8)
+  // fill(0)
+
 }
 
 function pieChart(diameter, data) {
