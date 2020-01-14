@@ -58,18 +58,18 @@ let age_legend = ['18-25 years', '26-34 years','35-49 years', '50+ years']
 let drugCategoryFileNames = ['marijuana_category.csv', 'cocaine_category.csv', 'heroin_category.csv', 'hallucinogen_category.csv', 'methamphetamine_category.csv']
 let drugAgeFileNames = ['marijuana_age.csv', 'cocaine_age.csv', 'heroin_age.csv', 'hallucinogen_age.csv', 'methamphetamine_age.csv']
 function preload() {
-  total_data = loadTable('real_data.csv','csv','header')
+  total_data = loadTable('data/real_data.csv','csv','header')
 
-  affected_data = loadTable('ellipse_data.csv', 'csv', 'header')
+  affected_data = loadTable('data/ellipse_data.csv', 'csv', 'header')
 
-  total_age_data = loadTable('total_age_data.csv', 'csv', 'header')
+  total_age_data = loadTable('data/total_age_data.csv', 'csv', 'header')
 
   for(let drug=0;  drug<=4;drug++){
-    drug_data[drug] = loadTable(drugCategoryFileNames[drug], 'csv', 'header')
+    drug_data[drug] = loadTable('data/'+drugCategoryFileNames[drug], 'csv', 'header')
   }
 
   for(let drug=0;  drug<=4;drug++){
-    drug_age_data[drug] = loadTable(drugAgeFileNames[drug], 'csv', 'header')
+    drug_age_data[drug] = loadTable('data/'+drugAgeFileNames[drug], 'csv', 'header')
   }
 }
 
