@@ -5,7 +5,7 @@ let drug_age_data = [];
 let drug_name;
 let hover_position = [];
 let drugArrays = []; // 3-dimentional array for plotting venn diagram
-let drugAgeArray = [];
+let  drugAgeArray = [];
 let age_chart_state = -1;
 let drawCrosses = false
 let main_toggle_state = 1;
@@ -32,7 +32,7 @@ let age_legend_rect_position = [400,540,680,820,960];
 let age_chart_rectangle_position = [200+400, 400+150, 400, 50]
 let main_toggle_x_position = [150,300,450]
 let main_toggle_y_position = 110;
-let v2_toggle_x_position = 200;
+let v2_toggle_x_position = 400;
 let v2_toggle_y_position = 200;
 let category_venn_position = 600;
 let category_venn_y_position = 700;
@@ -51,8 +51,11 @@ let v1_pie_data_y_position = [-70,-70,30,70,30]
 
 
 // Color
-let age_chart_color = ['hsba(190, 100%, 50%,1)', 'hsba(190, 100%, 50%,0.65)', 'hsba(190, 100%, 50%,0.35)', 'hsba(190, 100%, 50%,0.05)']
+let age_chart_color = ['hsla(195, 93%, 30%, 1)', 'hsla(195, 93%, 30%, 0.65)', 'hsla(195, 93%, 30%, 0.35)', 'hsla(195, 93%, 30%, 0.05)']
 let v2_venn_chart_color = ['hsba(60, 50%, 100%,0.5)', 'hsba(240, 90%, 100%,0.5)', 'hsba(400, 50%, 100%,0.5)']
+let venn_chart_color = ['hsla(295, 93%, 31%, 0.65)', 'hsla(0, 24%, 31%, 0.65)','hsla(161, 100%, 37%, 0.65)'];
+let venn_total_circle_color = 'hsla(0, 93%, 66%, 1)';
+let v2_affected_rect_color = 'hsla(217, 25%, 40%, 0.75)';
 
 let age_chart_category = ['Criminal', 'Mentally ill', 'Unemployed']
 let age_below_chart_category = ['Affected users', 'Addicted users', 'Total users']
@@ -116,22 +119,25 @@ function draw() {
   text('Some random explanatory text', 120, 80)
   line(110,90,canvasWidth-110,90)
 
-  k1= color(180)
+  k1= color('hsba(10, 50%, 80%,1)')
+  let k2 = color('hsla(0, 0%,0%, 0)')
   for(let i=0; i<=2;i++){
     if(main_toggle_state!=i){
       k1.setAlpha(200)
+      k2.setAlpha(200)
     }
     else{
-      k1.setAlpha(10)
+      k1.setAlpha(50)
+      k2.setAlpha(0)
     }
     fill(k1)
-    rect(main_toggle_x_position[i], main_toggle_y_position, 150, 40)
+    rect(main_toggle_x_position[i], main_toggle_y_position, 150, 40,5)
+    fill(k2)
+    text('Overall Statistics', 160,135)
+    text('Category-wise', 330, 125)
+    text('statistics', 350, 140)
+    text('Age-wise statistics', 460, 135)
   }
-  fill(0)
-  text('Overall Statistics', 160,135)
-  text('Category-wise', 330, 125)
-  text('statistics', 350, 140)
-  text('Age-wise statistics', 460, 135)
 
   if(main_toggle_state==0) {
     overall_statistics();
@@ -264,8 +270,7 @@ function category_wise_statistics() {
     text(drug,(drug_name_x_position+(i*240)),drug_name_y_position);
 
     // outer circle
-    let c1 = color('#008000');
-    fill(c1);
+    fill(venn_total_circle_color);
     t = (log(drug_users)) * total_circle_scaling;
     hover_position_x[i] = total_n_addicted_circle_position[i];
     hover_position_y[i] = total_y_position;
@@ -288,11 +293,11 @@ function category_wise_statistics() {
     let affected_data_union = affected_data.get(i,'UNION');
 
   if(!drawCrosses){
-      fill(v2_venn_chart_color[0]);
+      fill(venn_chart_color[0]);
       ellipse(venn_x_position+(i*240),(venn_y_position-350),120,120)
-      fill(v2_venn_chart_color[1]);
+      fill(venn_chart_color[1]);
       ellipse((venn_x_position-40)+(i*240),(venn_y_position-280),120,120)
-      fill(v2_venn_chart_color[2]);
+      fill(venn_chart_color[2]);
       ellipse((venn_x_position+40)+(i*240),(venn_y_position-280),120,120)
       fill(0)
 
@@ -305,11 +310,11 @@ function category_wise_statistics() {
       text(values[6],(venn_x_position-5)+(i*240),(venn_y_position-300))
     }
     else{
-      fill(v2_venn_chart_color[0]);
+      fill(venn_chart_color[0]);
       ellipse(venn_x_position+(i*240),(venn_y_position-350),120,120)
-      fill(v2_venn_chart_color[1]);
+      fill(venn_chart_color[1]);
       ellipse((venn_x_position-40)+(i*240),(venn_y_position-280),120,120)
-      fill(v2_venn_chart_color[2]);
+      fill(venn_chart_color[2]);
       ellipse((venn_x_position+40)+(i*240),(venn_y_position-280),120,120)
       fill(0)
       text(round(100*values[0]/affected_data_union)+"%",(venn_x_position-10)+(i*240),(venn_y_position-370))
@@ -321,17 +326,19 @@ function category_wise_statistics() {
       text(round(100*values[6]/affected_data_union)+"%",(venn_x_position-5)+(i*240),(venn_y_position-300))
     }
 
+    fill(v2_affected_rect_color)
     rect((venn_x_position+110)+(i*240), (venn_y_position-220)-rect_scaling*affected_data.get(i,'UNION'), 10, rect_scaling*affected_data.get(i,'UNION'));
+    fill(0)
     text(affected_data.get(i,'UNION'), (venn_x_position+107)+(i*240), (venn_y_position-225)-rect_scaling*affected_data.get(i,'UNION') )
   }
 
   //legend
   let legend_circle_y_position = 600
-  fill(v2_venn_chart_color[0]);
+  fill(venn_chart_color[0]);
   ellipse((i*230),legend_circle_y_position-70,50,50)
-  fill(v2_venn_chart_color[1]);
+  fill(venn_chart_color[1]);
   ellipse(-20+(i*230),legend_circle_y_position-40,50,50)
-  fill(v2_venn_chart_color[2]);
+  fill(venn_chart_color[2]);
   ellipse(20+(i*230),legend_circle_y_position-40,50,50)
 
   let legend_line_y_position = legend_circle_y_position-10
@@ -346,8 +353,8 @@ function category_wise_statistics() {
   text('Mentally ill', 1220, legend_text_y_position+10)
 
     // legend for total users circle
-    fill(color('#008000'));
-    circle(total_n_addicted_circle_position[total_n_addicted_circle_position.length-1]+150,legend_circle_y_position-200,50);
+    fill(venn_total_circle_color);
+ circle(total_n_addicted_circle_position[total_n_addicted_circle_position.length-1]+150,legend_circle_y_position-200,50);
 
     // legend for addicted users circle
     fill(color('white'));
@@ -360,8 +367,10 @@ function category_wise_statistics() {
     text('Fraction of addicted drug users', total_n_addicted_circle_position[total_n_addicted_circle_position.length-1]+185, legend_circle_y_position-170);
 
   //legend for total affected users
+  fill(v2_affected_rect_color)
   rect(total_n_addicted_circle_position[total_n_addicted_circle_position.length-1]+160, legend_circle_y_position+60,10,50)
-  line(1130,685,1200,685)
+  fill(0)
+  line(1137,685,1200,685)
   text('# of affected users',1205,689)
 
   //Interaction hover
@@ -386,14 +395,13 @@ function category_wise_statistics() {
       if((mouseX-hover_position_x[j])**2 +
          (mouseY-hover_position_y[j])**2 <= (hover_diameter[j]/2)**2) {
         mouseOnBox = true;
-        fill(255);
           fill(255);
-          rect((total_n_addicted_circle_position[j]-130),(hover_position_y[j]-90),130,90);
+          rect((total_n_addicted_circle_position[j]-150),(hover_position_y[j]-90),150,90);
           fill(1);
-          text(('Drug: ' + total_data.get(j+1,'drug')), (total_n_addicted_circle_position[j]-125),(hover_position_y[j]-75));
-          text(('# drug users: ' + drug_users), (total_n_addicted_circle_position[j]-125),(hover_position_y[j]-55));
-          text(('# drug addicts: ' + drug_addicts), (total_n_addicted_circle_position[j]-125),(hover_position_y[j]-35));
-          text(('% of addicts: ' + addicted_to_total + '%'), (total_n_addicted_circle_position[j]-125),(hover_position_y[j]-15));
+          text(('Drug: ' + total_data.get(j+1,'drug')), (total_n_addicted_circle_position[j]-145),(hover_position_y[j]-75));
+          text(('# drug users: ' + drug_users), (total_n_addicted_circle_position[j]-145),(hover_position_y[j]-55));
+          text(('# drug addicts: ' + drug_addicts), (total_n_addicted_circle_position[j]-145),(hover_position_y[j]-35));
+          text(('% of addicts: ' + addicted_to_total + '%'), (total_n_addicted_circle_position[j]-145),(hover_position_y[j]-15));
       }
     }
   }
@@ -402,16 +410,16 @@ function category_wise_statistics() {
 
 function age_wise_statistics() {
   fill(120)
-  k1 = color(180)
+  k1 = color('hsla(76, 100%, 29%, 1)')
   for(let i=0; i<=4;i++){
     if(v3_toggle_state!=i){
       k1.setAlpha(200)
     }
     else{
-      k1.setAlpha(10)
+      k1.setAlpha(40)
     }
     fill(k1)
-    rect(v3_toggle_x_position+(i*drug_toggle_offset), v3_toggle_y_position, drug_toggle_offset, 40)
+    rect(v3_toggle_x_position+(i*drug_toggle_offset), v3_toggle_y_position, drug_toggle_offset, 40,150)
   }
   fill(0)
   text('Marijuana', (v3_toggle_x_position+10), (v3_toggle_y_position+25))
@@ -430,7 +438,7 @@ function age_wise_statistics() {
     text(drug,(v3_drug_venn_x_position-35),(v3_drug_venn_y_position+310));
 
     // outer circle
-    fill(color('#008000'));
+    fill(venn_total_circle_color);
     t = (log(drug_users)) * total_circle_scaling;
     // hover_position[i] = t;
     circle(v3_drug_venn_x_position,v3_drug_venn_y_position,t);
@@ -449,15 +457,14 @@ function age_wise_statistics() {
                 affected_data.get(v3_toggle_state,'INTERSECTION')];
     let affected_data_union = affected_data.get(v3_toggle_state,'UNION');
 
-    colorMode(RGB, 100);
-    fill(100,0,0,15);
+    // colorMode(RGB, 100);
+    fill(venn_chart_color[0]);
     ellipse(v3_drug_venn_x_position,(v3_drug_venn_y_position+120),150,150)
-    fill(0,100,0,15);
+    fill(venn_chart_color[1]);
     ellipse((v3_drug_venn_x_position-40),(v3_drug_venn_y_position+210),150,150)
-    fill(0,0,100,15);
+    fill(venn_chart_color[2]);
     ellipse((v3_drug_venn_x_position+40),(v3_drug_venn_y_position+210),150,150)
     fill(0)
-
     text(values[0],(v3_drug_venn_x_position-10),(v3_drug_venn_y_position+90))
     text(values[1],(v3_drug_venn_x_position-90),(v3_drug_venn_y_position+ 240))
     text(values[2],(v3_drug_venn_x_position+70),(v3_drug_venn_y_position+ 240))
@@ -467,6 +474,10 @@ function age_wise_statistics() {
     text(values[6],(v3_drug_venn_x_position-10),(v3_drug_venn_y_position+ 180))
 
   colorMode(RGB, 255)
+
+  text('Criminal', 230,480)
+  text('Mentally ill', 170, 650)
+  text('Unemployed', 450, 570)
 
   let age_chart_offset = 200;
   fill(0)
