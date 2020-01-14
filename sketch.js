@@ -8,7 +8,7 @@ let drugArrays = []; // 3-dimentional array for plotting venn diagram
 let  drugAgeArray = [];
 let age_chart_state = -1;
 let drawCrosses = false
-let main_toggle_state = 1;
+let main_toggle_state = 0;
 let v3_toggle_state = 0;
 let drug;
 let drug_users;
@@ -41,13 +41,14 @@ let v3_toggle_y_position = 230;
 let drug_toggle_offset = 130;
 let v3_drug_venn_x_position = 350
 let v3_drug_venn_y_position = 400
-let v1_bar_chart_x_position = 400
+let v1_bar_chart_x_position = 550
 let v1_bar_chart_y_position = 180
-let v1_drug_name_x_scaling = [70,60,53,90,120]
-let v1_pie_x_position = 600
+let v1_drug_name_x_scaling = [53,43,38,70,95]
+let v1_pie_x_position = 400
 let v1_pie_y_position = 680
 let v1_pie_data_x_position = [-60,70,80,10,-60]
 let v1_pie_data_y_position = [-70,-70,30,70,30]
+let v1_pie_chart_legend_position = 300
 
 
 // Color
@@ -56,11 +57,14 @@ let v2_venn_chart_color = ['hsba(60, 50%, 100%,0.5)', 'hsba(240, 90%, 100%,0.5)'
 let venn_chart_color = ['hsla(295, 93%, 31%, 0.65)', 'hsla(0, 24%, 31%, 0.65)','hsla(161, 100%, 37%, 0.65)'];
 let venn_total_circle_color = 'hsla(0, 93%, 66%, 1)';
 let v2_affected_rect_color = 'hsla(217, 25%, 40%, 0.75)';
+let pie_chart_color = ['hsla(344, 75%, 70%, 1)','hsla(186, 38%, 73%, 0.92)', 'hsla(27, 65%, 67%, 0.92)', 'hsla(212, 62%, 50%, 0.92)', 'hsla(268, 0%, 68%, 1)']
+let v1_bar_chart_color=['hsla(231, 40%, 51%, 0.75)','hsla(29, 24%, 51%, 0.75)']
 
+//Legends
 let age_chart_category = ['Criminal', 'Mentally ill', 'Unemployed']
 let age_below_chart_category = ['Affected users', 'Addicted users', 'Total users']
 let age_legend = ['18-25 years', '26-34 years','35-49 years', '50+ years']
-
+let pie_chart_legend = ["12-17", "18-25", "26-34", "35-49", "50+"]
 
 let drugCategoryFileNames = ['marijuana_category.csv', 'cocaine_category.csv', 'heroin_category.csv', 'hallucinogen_category.csv', 'methamphetamine_category.csv']
 let drugAgeFileNames = ['marijuana_age.csv', 'cocaine_age.csv', 'heroin_age.csv', 'hallucinogen_age.csv', 'methamphetamine_age.csv']
@@ -110,7 +114,6 @@ function setup() {
 function draw() {
   background('#FFFAFA');
 
-  fill(0)
   line(100,0,100,canvasHeight);
   line(canvasWidth-100,0,canvasWidth-100,canvasHeight);
   textSize(30)
@@ -119,20 +122,17 @@ function draw() {
   text('Some random explanatory text', 120, 80)
   line(110,90,canvasWidth-110,90)
 
-  k1= color('hsba(10, 50%, 80%,1)')
-  let k2 = color('hsla(0, 0%,0%, 0)')
+  k1= color('hsla(0, 0%, 25%, 1)')
   for(let i=0; i<=2;i++){
     if(main_toggle_state!=i){
       k1.setAlpha(200)
-      k2.setAlpha(200)
     }
     else{
       k1.setAlpha(50)
-      k2.setAlpha(0)
     }
     fill(k1)
     rect(main_toggle_x_position[i], main_toggle_y_position, 150, 40,5)
-    fill(k2)
+    fill(0)
     text('Overall Statistics', 160,135)
     text('Category-wise', 330, 125)
     text('statistics', 350, 140)
@@ -153,10 +153,30 @@ function draw() {
 
 function overall_statistics() {
 
-  line(v1_bar_chart_x_position, v1_bar_chart_y_position+30, v1_bar_chart_x_position, v1_bar_chart_y_position+310)
-  line(v1_bar_chart_x_position+650, v1_bar_chart_y_position+30, v1_bar_chart_x_position+650, v1_bar_chart_y_position+310)
-  line(v1_bar_chart_x_position, v1_bar_chart_y_position+30, v1_bar_chart_x_position+650, v1_bar_chart_y_position+30)
-  line(v1_bar_chart_x_position, v1_bar_chart_y_position+310, v1_bar_chart_x_position+650, v1_bar_chart_y_position+310)
+  line(v1_bar_chart_x_position, v1_bar_chart_y_position+10, v1_bar_chart_x_position, v1_bar_chart_y_position+320)
+  line(v1_bar_chart_x_position+700, v1_bar_chart_y_position+30, v1_bar_chart_x_position+700, v1_bar_chart_y_position+300)
+  line(v1_bar_chart_x_position, v1_bar_chart_y_position+30, v1_bar_chart_x_position+700, v1_bar_chart_y_position+30)
+  line(v1_bar_chart_x_position, v1_bar_chart_y_position+300, v1_bar_chart_x_position+700, v1_bar_chart_y_position+300)
+
+  let offset = 65
+  text(0,v1_bar_chart_x_position+3,v1_bar_chart_y_position+315)
+  text(70,v1_bar_chart_x_position+offset,v1_bar_chart_y_position+315)
+  text(140,v1_bar_chart_x_position+2*offset,v1_bar_chart_y_position+315)
+  text(210,v1_bar_chart_x_position+3*offset+5,v1_bar_chart_y_position+315)
+  text(280,v1_bar_chart_x_position+4*offset+10,v1_bar_chart_y_position+315)
+  text(350,v1_bar_chart_x_position+5*offset+15,v1_bar_chart_y_position+315)
+  text(420,v1_bar_chart_x_position+6*offset+20,v1_bar_chart_y_position+315)
+  text(1500,v1_bar_chart_x_position+7*offset+25,v1_bar_chart_y_position+315)
+  text(10000,v1_bar_chart_x_position+9*offset+30,v1_bar_chart_y_position+315)
+
+  for(let i=1;i<=9;i++) {
+    stroke(color('hsla(0, 0%, 67%, 0.55)'))
+    line(v1_bar_chart_x_position+(i*70),v1_bar_chart_y_position+30, v1_bar_chart_x_position+(i*70),v1_bar_chart_y_position+300)
+    text('.',v1_bar_chart_x_position+6.6*offset+(i*5),v1_bar_chart_y_position+315)
+    text('.',v1_bar_chart_x_position+8*offset+(i*5),v1_bar_chart_y_position+315)
+  }
+  stroke(150)
+  fill(0)
 
 
   textSize(12)
@@ -167,9 +187,9 @@ function overall_statistics() {
     let addicted_users = total_data.get(i+1,"addicted_users")
     if(total_users<500){
       let addicted_width = round((addicted_users/total_users)*total_users)
-      fill(0)
+      fill(v1_bar_chart_color[0])
       rect(v1_bar_chart_x_position, v1_bar_chart_y_position+((i+1)*50), total_users,30)
-      fill(255)
+      fill(v1_bar_chart_color[1])
       rect(v1_bar_chart_x_position, v1_bar_chart_y_position+ ((i+1)*50), addicted_width,30)
       fill(0)
       text(round((addicted_users/total_users)*100)+"%", v1_bar_chart_x_position+addicted_width/2, v1_bar_chart_y_position+((i+1)*54+drug_name_y_scaling))
@@ -179,9 +199,9 @@ function overall_statistics() {
     }else if(total_users>5000){
       let scaling = 17
       let addicted_width=  round((addicted_users/scaling)/(total_users/scaling)*(total_users/scaling))
-      fill(0)
+      fill(v1_bar_chart_color[0])
       rect(v1_bar_chart_x_position, v1_bar_chart_y_position+((i+1)*50), total_users/scaling,30)
-      fill(255)
+      fill(v1_bar_chart_color[1])
       rect(v1_bar_chart_x_position, v1_bar_chart_y_position+ ((i+1)*50), addicted_width,30)
       fill(0)
       text(round((addicted_users/scaling)/(total_users/scaling)*100)+"%", v1_bar_chart_x_position+addicted_width/3, v1_bar_chart_y_position+((i+1)*54+drug_name_y_scaling))
@@ -189,9 +209,9 @@ function overall_statistics() {
     } else{
       let scaling = 3
       let addicted_width= round(((addicted_users/scaling)/(total_users/scaling))*(total_users/scaling))
-      fill(0)
+      fill(v1_bar_chart_color[0])
       rect(v1_bar_chart_x_position, v1_bar_chart_y_position+((i+1)*50), total_users/scaling,30)
-      fill(255)
+      fill(v1_bar_chart_color[1])
       rect(v1_bar_chart_x_position, v1_bar_chart_y_position+ ((i+1)*50), addicted_width,30)
       fill(0)
               text(round((addicted_users/scaling)/(total_users/scaling)*100)+"%", v1_bar_chart_x_position+addicted_width/2-7, v1_bar_chart_y_position+((i+1)*54+drug_name_y_scaling))
@@ -212,6 +232,12 @@ function overall_statistics() {
   let angles=[round(int(total_age_data.get(0,"12-17"))/total_users*100), round(int(total_age_data.get(0,"18-25"))/total_users*100), round(int(total_age_data.get(0,"26-34"))/total_users*100), round(int(total_age_data.get(0,"35-49"))/total_users*100), round(int(total_age_data.get(0,"50+"))/total_users*100)]
 
   pieChart(250,angles)
+  for(let i=0;i<=4;i++){
+    fill(pie_chart_color[i])
+    rect(v1_pie_chart_legend_position+(i*70),820,10,10)
+    fill(0)
+    text(pie_chart_legend[i],v1_pie_chart_legend_position+(i*70)+12, 830)
+  }
   fill(0)
 }
 
@@ -221,9 +247,9 @@ function pieChart(diameter, data) {
   var range = 2.0 * PI / sum;
   var lastAngle = 0;
   for (let i = 0; i < data.length; i++) {
-    fill(map(i, 0, data.length, 0, 255));
+    fill(pie_chart_color[i])
     arc(v1_pie_x_position, v1_pie_y_position, diameter, diameter, lastAngle, lastAngle += data[i] * range );
-    fill(255)
+    fill(0)
     text(data[i]+"%",v1_pie_x_position-v1_pie_data_x_position[i], v1_pie_y_position-v1_pie_data_y_position[i])
   }
 }
@@ -409,7 +435,8 @@ function category_wise_statistics() {
 
 
 function age_wise_statistics() {
-  fill(120)
+  // fill(120)
+  // stroke(150)
   k1 = color('hsla(76, 100%, 29%, 1)')
   for(let i=0; i<=4;i++){
     if(v3_toggle_state!=i){
