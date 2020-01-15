@@ -9,7 +9,7 @@ let drugArrays = []; // 3-dimentional array for plotting venn diagram
 let drugAgeArray = [];
 let age_chart_state = -1;
 let drawCrosses = false
-let main_toggle_state = 1;
+let main_toggle_state = 0;
 let v3_toggle_state = 0;
 let drug;
 let drug_users;
@@ -49,8 +49,8 @@ let v1_pie_x_position = 1050
 let v1_pie_y_position = 310
 let v1_pie_data_x_position = [-60,70,80,10,-60]
 let v1_pie_data_y_position = [-70,-70,30,70,30]
-let v1_pie_chart_legend_x_position = 930
-let v1_pie_chart_legend_y_position = 440
+let v1_pie_chart_legend_x_position = 970
+let v1_pie_chart_legend_y_position = 430
 let v1_bar_chart_legend_x_position = 1000;
 let v1_bar_chart_legend_y_position = 680;
 let v1_bar_chart_axis_value_position = [250,270,290,310,350,410,460,530, 630,800, 940]
@@ -62,7 +62,7 @@ let background_color = '#FFFAFA'
 let age_chart_color = ['hsla(195, 93%, 30%, 1)', 'hsla(195, 93%, 30%, 0.65)', 'hsla(195, 93%, 30%, 0.35)', 'hsla(195, 93%, 30%, 0.05)']
 let v2_venn_chart_color = ['hsba(60, 50%, 100%,0.5)', 'hsba(240, 90%, 100%,0.5)', 'hsba(400, 50%, 100%,0.5)']
 let venn_chart_color = ['hsla(295, 93%, 31%, 0.65)', 'hsla(0, 24%, 31%, 0.65)','hsla(161, 100%, 37%, 0.65)'];
-let venn_total_circle_color = 'hsla(0, 93%, 66%, 0.5)';
+let venn_total_circle_color = 'hsla(0, 93%, 66%, 0.75)';
 let v2_affected_rect_color = 'hsla(217, 25%, 40%, 0.75)';
 let pie_chart_color = ['hsla(344, 75%, 70%, 1)','hsla(186, 38%, 73%, 0.92)', 'hsla(27, 65%, 67%, 0.92)', 'hsla(212, 62%, 50%, 0.92)', 'hsla(268, 0%, 68%, 1)']
 let v1_bar_chart_color=['hsla(231, 40%, 51%, 0.75)','hsla(29, 24%, 51%, 0.75)']
@@ -163,6 +163,11 @@ function draw() {
 
 function overall_statistics() {
 
+  text("Dataset source:", 200,200)
+  text("* National Survey on Drug Use and Health (NSDUH), a major source of statistical information \non illicit drugs and on mental health issues of the US civilians, population aged 12 or older",200, 220)
+  text("* Analysed 2017 NSDUH dataset which consists of almost 2668 attributes, a rich information \nof several drugs at different levels of detail", 200, 260)
+  text("Total # of users in the dataset: 56000", 350, 300)
+
   line(v1_bar_chart_x_position, v1_bar_chart_y_position+10, v1_bar_chart_x_position, v1_bar_chart_y_position+300)
   line(v1_bar_chart_x_position, v1_bar_chart_y_position+300, v1_bar_chart_x_position+700, v1_bar_chart_y_position+300)
 
@@ -201,22 +206,27 @@ function overall_statistics() {
   let angles=[round(int(total_age_data.get(0,"12-17"))/total_users*100), round(int(total_age_data.get(0,"18-25"))/total_users*100), round(int(total_age_data.get(0,"26-34"))/total_users*100), round(int(total_age_data.get(0,"35-49"))/total_users*100), round(int(total_age_data.get(0,"50+"))/total_users*100)]
 
   //legend for pie chart
-  text('Age-wise distribution of drug users in the US, 2017', v1_pie_chart_legend_x_position-20, v1_pie_chart_legend_y_position-260)
+  text('Age-wise distribution of users', v1_pie_chart_legend_x_position, v1_pie_chart_legend_y_position-260)
   pieChart(250,angles)
   for(let i=0;i<=4;i++){
     fill(pie_chart_color[i])
-    rect(v1_pie_chart_legend_x_position+(i*70)-20,v1_pie_chart_legend_y_position,10,10)
+    rect(v1_pie_chart_legend_x_position+(i*70)-20,v1_pie_chart_legend_y_position+15,10,10)
     fill(0)
-    text(pie_chart_legend[i],v1_pie_chart_legend_x_position+(i*70)-8, v1_pie_chart_legend_y_position+10)
+    text(pie_chart_legend[i],v1_pie_chart_legend_x_position+(i*70)-8, v1_pie_chart_legend_y_position+24)
   }
 
   //legend for bar chart
-  text('Total number of users for different drugs in the US for 2017', v1_bar_chart_x_position+120,v1_bar_chart_y_position+20)
+  text('# of Drug and Addicted Users to different illicit drugs', v1_bar_chart_x_position+160,v1_bar_chart_y_position+35)
   for(let i=0;i<=1;i++){
     fill(v1_bar_chart_color[i])
     rect(v1_bar_chart_legend_x_position, v1_bar_chart_legend_y_position+20,140-(i*80),20)
   }
   fill(0)
+  line(965,580,985,570)
+  line(965,580,985,590)
+  line(965,580,1050,580)
+  line(1050,580,1050, 600)
+  text("The graph is plotted on a square \nroot scale to normalize the data", 1000, 610)
 
   line(v1_bar_chart_legend_x_position,v1_bar_chart_legend_y_position+60,v1_bar_chart_legend_x_position+140,v1_bar_chart_legend_y_position+60)
   line(v1_bar_chart_legend_x_position,v1_bar_chart_legend_y_position+45,v1_bar_chart_legend_x_position,v1_bar_chart_legend_y_position+60)
@@ -227,7 +237,6 @@ function overall_statistics() {
 
   text('# of drug users', v1_bar_chart_legend_x_position+30, v1_bar_chart_legend_y_position+75)
   text('# of addicted users', v1_bar_chart_legend_x_position, v1_bar_chart_legend_y_position-8)
-  // fill(0)
 
 }
 
