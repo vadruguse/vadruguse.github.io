@@ -62,7 +62,7 @@ let background_color = '#FFFAFA'
 let age_chart_color = ['hsla(195, 93%, 30%, 1)', 'hsla(195, 93%, 30%, 0.65)', 'hsla(195, 93%, 30%, 0.35)', 'hsla(195, 93%, 30%, 0.05)']
 let v2_venn_chart_color = ['hsba(60, 50%, 100%,0.5)', 'hsba(240, 90%, 100%,0.5)', 'hsba(400, 50%, 100%,0.5)']
 let venn_chart_color = ['hsla(295, 93%, 31%, 0.65)', 'hsla(0, 24%, 31%, 0.65)','hsla(161, 100%, 37%, 0.65)'];
-let venn_total_circle_color = 'hsla(0, 93%, 66%, 0.75)';
+let venn_total_circle_color = 'hsla(0, 93%, 56%, 1)';
 let v2_affected_rect_color = 'hsla(217, 25%, 40%, 0.75)';
 let pie_chart_color = ['hsla(344, 75%, 70%, 1)','hsla(186, 38%, 73%, 0.92)', 'hsla(27, 65%, 67%, 0.92)', 'hsla(212, 62%, 50%, 0.92)', 'hsla(268, 0%, 68%, 1)']
 let v1_bar_chart_color=['hsla(231, 40%, 51%, 0.75)','hsla(29, 24%, 51%, 0.75)']
@@ -126,9 +126,9 @@ function draw() {
   line(100,0,100,canvasHeight);
   line(canvasWidth-100,0,canvasWidth-100,canvasHeight);
   textSize(30)
-  text('Drug Addiction Statistics in the US for 2017', 120, 50)
+  text('Illicit Drug Addiction Statistics in the US for 2017', 120, 50)
   textSize(15)
-  text('Some random explanatory text', 120, 80)
+  text('Explore drug usage statistics on different social-demographic categories or population-age demographies', 120, 80)
   line(110,90,canvasWidth-110,90)
 
   k1= color('hsla(0, 0%, 25%, 1)')
@@ -158,15 +158,20 @@ function draw() {
   }
 
   line(110, canvasHeight-140, canvasWidth-110, canvasHeight-140)
+  // textSize(14)
   text('Key takeaways:',110, canvasHeight-120)
 }
 
 function overall_statistics() {
 
-  text("Dataset source:", 200,200)
-  text("* National Survey on Drug Use and Health (NSDUH), a major source of statistical information \non illicit drugs and on mental health issues of the US civilians, population aged 12 or older",200, 220)
-  text("* Analysed 2017 NSDUH dataset which consists of almost 2668 attributes, a rich information \nof several drugs at different levels of detail", 200, 260)
-  text("Total # of users in the dataset: 56000", 350, 300)
+  textSize(20)
+  text("Description", 400,210)
+  textSize(14)
+  text("* National Survey on Drug Use and Health (NSDUH), a major source of statistical information \non illicit drugs and on mental health issues of the US civilians, population aged 12 or older",200, 240)
+  text("* Analysed 2017 NSDUH dataset which consists of almost 2668 attributes, a rich information \nof several drugs at different levels of detail", 200, 280)
+  textSize(20)
+  text("Total # of users in the dataset: 56000", 350, 350)
+  textSize(14)
 
   line(v1_bar_chart_x_position, v1_bar_chart_y_position+10, v1_bar_chart_x_position, v1_bar_chart_y_position+300)
   line(v1_bar_chart_x_position, v1_bar_chart_y_position+300, v1_bar_chart_x_position+700, v1_bar_chart_y_position+300)
