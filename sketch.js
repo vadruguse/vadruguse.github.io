@@ -53,19 +53,19 @@ let v1_pie_chart_legend_x_position = 970
 let v1_pie_chart_legend_y_position = 430
 let v1_bar_chart_legend_x_position = 1000;
 let v1_bar_chart_legend_y_position = 680;
-let v1_bar_chart_axis_value_position = [250,270,290,310,350,410,460,530, 630,800, 940]
-let v1_bar_chart_axis_value=[0,4,64,128,256,512,1024,2048,4096,8192,11000]
+let v1_bar_chart_axis_value_position = [250,310,350,410,460,530, 630,800, 940]
+let v1_bar_chart_axis_value=[0,128,256,512,1024,2048,4096,8192,11000]
 
 
 // Color
-let background_color = '#FFFAFA'
-let age_chart_color = ['hsla(195, 93%, 30%, 1)', 'hsla(195, 93%, 30%, 0.65)', 'hsla(195, 93%, 30%, 0.35)', 'hsla(195, 93%, 30%, 0.05)']
-let v2_venn_chart_color = ['hsba(60, 50%, 100%,0.5)', 'hsba(240, 90%, 100%,0.5)', 'hsba(400, 50%, 100%,0.5)']
-let venn_chart_color = ['hsla(295, 93%, 31%, 0.65)', 'hsla(0, 24%, 31%, 0.65)','hsla(161, 100%, 37%, 0.65)'];
-let venn_total_circle_color = 'hsla(0, 93%, 56%, 1)';
+let background_color = 'white'
+let age_chart_color = ['hsla(195, 93%, 30%, 0.60)', 'hsla(195, 93%, 30%, 0.40)', 'hsla(195, 93%, 30%, 0.20)', 'hsla(195, 93%, 30%, 0.05)']
+let venn_chart_color = ['#fed9a6', '#ccebc5','#b3cde3'];
+let venn_total_circle_color = '#EA6B6B';
 let v2_affected_rect_color = 'hsla(217, 25%, 40%, 0.75)';
-let pie_chart_color = ['hsla(344, 75%, 70%, 1)','hsla(186, 38%, 73%, 0.92)', 'hsla(27, 65%, 67%, 0.92)', 'hsla(212, 62%, 50%, 0.92)', 'hsla(268, 0%, 68%, 1)']
-let v1_bar_chart_color=['hsla(231, 40%, 51%, 0.75)','hsla(29, 24%, 51%, 0.75)']
+let pie_chart_color = ['#8dd3c7',
+'#ffffb3','#bebada','#fb8072','#80b1d3']
+let v1_bar_chart_color=['#80cdc1', '#dfc27d']
 
 
 //Legends
@@ -159,7 +159,7 @@ function draw() {
 
   line(110, canvasHeight-140, canvasWidth-110, canvasHeight-140)
   // textSize(14)
-  text('Key takeaways:',110, canvasHeight-120)
+  // text('Key takeaways:',110, canvasHeight-120)
 }
 
 function overall_statistics() {
@@ -197,7 +197,7 @@ function overall_statistics() {
     }
 
   let offset = 2
-  for(let i=0;i<=10;i++){
+  for(let i=0;i<=8;i++){
     stroke(150)
     text(v1_bar_chart_axis_value[i], v1_bar_chart_axis_value_position[i]-offset, v1_bar_chart_y_position+320)
     offset+=1
@@ -251,7 +251,9 @@ function pieChart(diameter, data) {
   var range = 2.0 * PI / sum;
   var lastAngle = 0;
   for (let i = 0; i < data.length; i++) {
-    fill(pie_chart_color[i])
+    let k = color(pie_chart_color[i])
+    k.setAlpha(100)
+    fill(k)
     arc(v1_pie_x_position, v1_pie_y_position, diameter, diameter, lastAngle, lastAngle += data[i] * range );
     fill(0)
     text(data[i]+"%",v1_pie_x_position-v1_pie_data_x_position[i], v1_pie_y_position-v1_pie_data_y_position[i])
@@ -274,6 +276,10 @@ function category_wise_statistics() {
   }
 
   fill(0);
+  text("Number of total users for different social-demographic group is a combination of different fields in the dataset.", 120,830)
+  text(" * Criminal: # of Violent Attacks + Stealing + Selling drugs",150, 850)
+  text(" * Mentally Ill: Mental health + Depressive disorder", 150, 870)
+  text("")
   textSize(14);
   for(i=0; i<5;i++){
     drug = drug_Data.get(i, 'drug')
@@ -322,11 +328,17 @@ function category_wise_statistics() {
     let all_addict_data = affected_data.get(i,'ALL_ADDICTS');
 
   if(!drawCrosses){
-      fill(venn_chart_color[0]);
+      let k1 = color(venn_chart_color[0])
+      k1.setAlpha(150)
+      fill(k1);
       ellipse(venn_x_position+(i*240),(venn_y_position-350),120,120)
-      fill(venn_chart_color[1]);
+      let k2 = color(venn_chart_color[1])
+      k2.setAlpha(150)
+      fill(k2);
       ellipse((venn_x_position-40)+(i*240),(venn_y_position-280),120,120)
-      fill(venn_chart_color[2]);
+      let k3 = color(venn_chart_color[2])
+      k3.setAlpha(150)
+      fill(k3);
       ellipse((venn_x_position+40)+(i*240),(venn_y_position-280),120,120)
       fill(0)
 
@@ -339,12 +351,19 @@ function category_wise_statistics() {
       text(values[6],(venn_x_position-5)+(i*240),(venn_y_position-300))
     }
     else{
-      fill(venn_chart_color[0]);
+      let k1 = color(venn_chart_color[0])
+      k1.setAlpha(150)
+      fill(k1);
       ellipse(venn_x_position+(i*240),(venn_y_position-350),120,120)
-      fill(venn_chart_color[1]);
+      let k2 = color(venn_chart_color[1])
+      k2.setAlpha(150)
+      fill(k2);
       ellipse((venn_x_position-40)+(i*240),(venn_y_position-280),120,120)
-      fill(venn_chart_color[2]);
+      let k3 = color(venn_chart_color[2])
+      k3.setAlpha(150)
+      fill(k3);
       ellipse((venn_x_position+40)+(i*240),(venn_y_position-280),120,120)
+
       fill(0)
       text(round(100*values[0]/all_addict_data)+"%",(venn_x_position-10)+(i*240),(venn_y_position-370))
       text(round(100*values[1]/all_addict_data)+"%",(venn_x_position-70)+(i*240),(venn_y_position-250))
@@ -486,11 +505,17 @@ function age_wise_statistics() {
     let affected_data_union = affected_data.get(v3_toggle_state,'UNION');
 
     // colorMode(RGB, 100);
-    fill(venn_chart_color[0]);
+    let k4 = color(venn_chart_color[0])
+    k4.setAlpha(150)
+    fill(k4);
     ellipse(v3_drug_venn_x_position,(v3_drug_venn_y_position+120),150,150)
-    fill(venn_chart_color[1]);
+    let k5 = color(venn_chart_color[1])
+    k5.setAlpha(150)
+    fill(k5);
     ellipse((v3_drug_venn_x_position-40),(v3_drug_venn_y_position+210),150,150)
-    fill(venn_chart_color[2]);
+    let k6 = color(venn_chart_color[2])
+    k6.setAlpha(150)
+    fill(k6);
     ellipse((v3_drug_venn_x_position+40),(v3_drug_venn_y_position+210),150,150)
     fill(0)
     text(values[0],(v3_drug_venn_x_position-10),(v3_drug_venn_y_position+90))
@@ -556,7 +581,8 @@ function age_wise_statistics() {
 
   //legend for age-group
   for (index = 0; index < age_chart_color.length; index++){
-    fill(age_chart_color[index]);
+
+  fill(age_chart_color[index])
   rect(age_legend_rect_position[age_legend_rect_position.length-1]+180, 440+20*index, 60, 10);
     fill(1);
     text(age_legend[index], age_legend_rect_position[age_legend_rect_position.length-1]+250, 450+20*index)
