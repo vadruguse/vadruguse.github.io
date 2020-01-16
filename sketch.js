@@ -44,7 +44,7 @@ let v3_drug_venn_x_position = 350
 let v3_drug_venn_y_position = 400
 let v1_bar_chart_x_position = 250
 let v1_bar_chart_y_position = 450
-let v1_drug_name_x_scaling = [53,70,43,95,38]
+let v1_drug_name_x_scaling = [60,76,48,107,43]
 let v1_pie_x_position = 1050
 let v1_pie_y_position = 310
 let v1_pie_data_x_position = [-60,70,80,10,-60]
@@ -66,6 +66,7 @@ let v2_affected_rect_color = 'hsla(217, 25%, 40%, 0.75)';
 let pie_chart_color = ['#8dd3c7',
 '#ffffb3','#bebada','#fb8072','#80b1d3']
 let v1_bar_chart_color=['#80cdc1', '#dfc27d']
+let default_color = 'hsla(0, 0%, 0%, 0.75)'
 
 
 //Legends
@@ -98,7 +99,7 @@ function setup() {
   createCanvas(canvasWidth, canvasHeight);
   textSize(14);
   frameRate(60);
-  textFont('serif');
+  textFont('Georgia');
 
   for(let drug=0;drug<=4;drug++) {
       drugArrays[drug] = [];
@@ -126,8 +127,10 @@ function draw() {
   line(100,0,100,canvasHeight);
   line(canvasWidth-100,0,canvasWidth-100,canvasHeight);
   textSize(30)
+  fill(default_color)
   text('Illicit Drug Addiction Statistics in the US for 2017', 120, 50)
   textSize(15)
+  fill('hsla(0, 0%, 0%, 1)')
   text('Explore drug usage statistics on different social-demographic categories or population-age demographies', 120, 80)
   line(110,90,canvasWidth-110,90)
 
@@ -141,7 +144,7 @@ function draw() {
     }
     fill(k1)
     rect(main_toggle_x_position[i], main_toggle_y_position, 150, 40,5)
-    fill(0)
+    fill(default_color)
     textSize(13)
     text('Overall statistics', 180,135)
     text('Social analysis of \n    Drug Addicts', 328, 125)
@@ -158,19 +161,20 @@ function draw() {
   }
 
   line(110, canvasHeight-140, canvasWidth-110, canvasHeight-140)
-  // textSize(14)
-  // text('Key takeaways:',110, canvasHeight-120)
 }
 
 function overall_statistics() {
 
-  textSize(20)
-  text("Description", 400,210)
-  textSize(14)
-  text("* National Survey on Drug Use and Health (NSDUH), a major source of statistical information \non illicit drugs and on mental health issues of the US civilians, population aged 12 or older",200, 240)
-  text("* Analysed 2017 NSDUH dataset which consists of almost 2668 attributes, a rich information \nof several drugs at different levels of detail", 200, 280)
-  textSize(20)
-  text("Total # of users in the dataset: 56000", 350, 350)
+  textSize(22)
+  text('Analysed data of 56000 users from the US Drug Usage Survey * of 2017', 200, 240)
+  textSize(18)
+  text('Number of drug users(used atleast 3 times in the past year) reported \n              as well as the fraction of all users who are addicted \n                       is displayed for the 5 most common drugs', 250, 320)
+  fill('hsla(0, 0%, 25%, 0.75)')
+  textSize(12)
+  text("* National Survey on Drug Use and Health (NSDUH),",130,830)
+  textSize(10)
+  text("a major source of statistical information on illicit drugs and on mental health issues of the US civilians, population aged 12 or older",418, 830)
+  // text("illicit drugs and on mental health issues of the US civilians, population aged 12 or older", 140,850)
   textSize(14)
 
   line(v1_bar_chart_x_position, v1_bar_chart_y_position+10, v1_bar_chart_x_position, v1_bar_chart_y_position+300)
@@ -185,13 +189,15 @@ function overall_statistics() {
     let addicted_users = drug_Data.get(i,"addicted_users")
     let drug_name = drug_Data.get(i,"drug")
 
-    let addicted_width = round((addicted_users/sqrt(addicted_users)))
+    let total_width = round(sqrt(total_users))*scaling
+    // let addicted_pert = round((addicted_users/sqrt(addicted_users)))
+    let addicted_width = total_width * (addicted_users/total_users)
     fill(v1_bar_chart_color[0])
-    rect(v1_bar_chart_x_position, v1_bar_chart_y_position+((i+1)*50), round(total_users/sqrt(total_users))*scaling,30)
+    rect(v1_bar_chart_x_position, v1_bar_chart_y_position+((i+1)*50), round(total_width),30)
     fill(v1_bar_chart_color[1])
-    rect(v1_bar_chart_x_position, v1_bar_chart_y_position+ ((i+1)*50), addicted_width*scaling,30)
+    rect(v1_bar_chart_x_position, v1_bar_chart_y_position+ ((i+1)*50), addicted_width,30)
     fill(0)
-    text(round((addicted_users/total_users)*100)+"%", v1_bar_chart_x_position+(addicted_width*scaling)/2, v1_bar_chart_y_position+((i+1)*54+drug_name_y_scaling))
+    text(round((addicted_users/total_users)*100)+"%", v1_bar_chart_x_position+(addicted_width+1), v1_bar_chart_y_position+((i+1)*54+drug_name_y_scaling))
     text(drug_name, v1_bar_chart_x_position-v1_drug_name_x_scaling[i], v1_bar_chart_y_position+(i+1)*54+drug_name_y_scaling)
     drug_name_y_scaling-=4
     }
@@ -221,7 +227,7 @@ function overall_statistics() {
   }
 
   //legend for bar chart
-  text('# of Drug and Addicted Users to different illicit drugs', v1_bar_chart_x_position+160,v1_bar_chart_y_position+35)
+  text('# of Drug and Addicted users for different illicit drugs', v1_bar_chart_x_position+160,v1_bar_chart_y_position+35)
   for(let i=0;i<=1;i++){
     fill(v1_bar_chart_color[i])
     rect(v1_bar_chart_legend_x_position, v1_bar_chart_legend_y_position+20,140-(i*80),20)
@@ -242,6 +248,16 @@ function overall_statistics() {
 
   text('# of drug users', v1_bar_chart_legend_x_position+30, v1_bar_chart_legend_y_position+75)
   text('# of addicted users', v1_bar_chart_legend_x_position, v1_bar_chart_legend_y_position-8)
+
+  line(400,670,420,670)
+  line(370,715,420,715)
+  line(420,670,420,715)
+  line(420,695,450,695)
+  text('Most addictive drugs',455,699)
+  line(720,540,720,570)
+  line(720,540,710,550)
+  line(720,540,730,550)
+  text('Most # of drug users',675,580)
 
 }
 
