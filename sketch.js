@@ -1,3 +1,5 @@
+let mj, hal, coc, meth, hero;
+
 let affected_rect_height
 let total_data;
 let drug_Data;
@@ -10,7 +12,7 @@ let drugArrays = []; // 3-dimentional array for plotting venn diagram
 let drugAgeArray = [];
 let age_chart_state = -1;
 let drawCrosses = false
-let main_toggle_state = 0;
+let main_toggle_state = 2;
 let v3_toggle_state = 0;
 let drug;
 let drug_users;
@@ -78,7 +80,14 @@ let pie_chart_legend = ["12-17", "18-25", "26-34", "35-49", "50+"]
 
 let drugCategoryFileNames = ['marijuana_category_all.csv', 'cocaine_category_all.csv', 'heroin_category_all.csv', 'hallucinogen_category_all.csv', 'methamphetamine_category_all.csv']
 let drugAgeFileNames = ['marijuana_age.csv', 'cocaine_age.csv', 'heroin_age.csv', 'hallucinogen_age.csv', 'methamphetamine_age.csv']
+
 function preload() {
+  mj = loadImage('data/mj.png')
+  hal = loadImage('data/hal.jpeg')
+  coc = loadImage('data/coc.jpg')
+  meth = loadImage('data/meth.jpg')
+  hero = loadImage('data/hero.jpg')
+  
   drug_Data = loadTable('data/drug_data.csv', 'csv','header')
 
   affected_data = loadTable('data/ellipse_data.csv', 'csv', 'header')
@@ -691,6 +700,7 @@ function age_wise_statistics() {
     v3_text_x = 350;
     v3_text_y = 330;
   if(v3_toggle_state==0){
+      image(mj, 1050, 150, 150, 150);
       textSize(12)
       text("Addicts tend to be younger (18-25 years old) compared to all users", v3_text_x+300, v3_text_y+270);
       noFill()
@@ -698,8 +708,10 @@ function age_wise_statistics() {
       strokeWeight(1)
       rect(v3_text_x+386, v3_text_y+277, 50, 67)
     } else if (v3_toggle_state==1){
+      image(hal, 1050, 150, 180, 150);
       text(" ", v3_text_x, v3_text_y);
     } else if (v3_toggle_state==2){
+      image(coc, 1050, 150, 170, 150);
       textSize(12)
       text("Addicts are older (35+ years) compared to all users", v3_text_x+430, v3_text_y+270);
       noFill()
@@ -707,8 +719,10 @@ function age_wise_statistics() {
       strokeWeight(1)
       rect(v3_text_x+490, v3_text_y+277, 160, 67)
     } else if (v3_toggle_state==3){
+      image(meth, 1050, 150, 220, 150);
       text("", v3_text_x, v3_text_y);
     } else if (v3_toggle_state==4){
+      image(hero, 1050, 150, 220, 150);
       text(" ", v3_text_x, v3_text_y);
     }
 }
