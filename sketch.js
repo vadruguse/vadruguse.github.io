@@ -1,5 +1,3 @@
-let mj, hal, coc, meth, hero;
-
 let affected_rect_height
 let total_data;
 let drug_Data;
@@ -78,16 +76,9 @@ let age_below_chart_category = ['Addicted users', 'All users']
 let age_legend = ['18-25 years', '26-34 years','35-49 years', '50+ years']
 let pie_chart_legend = ["12-17", "18-25", "26-34", "35-49", "50+"]
 
-let drugCategoryFileNames = ['marijuana_category_all.csv', 'cocaine_category_all.csv', 'heroin_category_all.csv', 'hallucinogen_category_all.csv', 'methamphetamine_category_all.csv']
-let drugAgeFileNames = ['marijuana_age.csv', 'cocaine_age.csv', 'heroin_age.csv', 'hallucinogen_age.csv', 'methamphetamine_age.csv']
-
+let drugCategoryFileNames = ['marijuana_category_all.csv', 'hallucinogen_category_all.csv', 'cocaine_category_all.csv', 'methamphetamine_category_all.csv', 'heroin_category_all.csv']
+let drugAgeFileNames = ['marijuana_age.csv',  'hallucinogen_age.csv', 'cocaine_age.csv', 'methamphetamine_age.csv', 'heroin_age.csv']
 function preload() {
-  mj = loadImage('data/mj.png')
-  hal = loadImage('data/hal.jpeg')
-  coc = loadImage('data/coc.jpg')
-  meth = loadImage('data/meth.jpg')
-  hero = loadImage('data/hero.jpg')
-  
   drug_Data = loadTable('data/drug_data.csv', 'csv','header')
 
   affected_data = loadTable('data/ellipse_data.csv', 'csv', 'header')
@@ -134,6 +125,7 @@ function setup() {
 function draw() {
   background(background_color);
 
+  // print(drug_age_data)
   stroke(100)
   line(100,0,100,canvasHeight);
   line(canvasWidth-100,0,canvasWidth-100,canvasHeight);
@@ -699,31 +691,25 @@ function age_wise_statistics() {
 
     v3_text_x = 350;
     v3_text_y = 330;
-  image(mj, 1050, 150, 150, 150);
   if(v3_toggle_state==0){
-      
       textSize(12)
-      text("Addicts tend to be younger (18-25 years old) compared to all users", v3_text_x+300, v3_text_y+270);
+      text("Addicts tend to be younger (18-25 years old) compared to all users", v3_text_x+320, v3_text_y+270);
       noFill()
       stroke("red")
       strokeWeight(1)
-      rect(v3_text_x+386, v3_text_y+277, 50, 67)
+      rect(v3_text_x+366, v3_text_y+277, 70, 67)
     } else if (v3_toggle_state==1){
-      // image(hal, 1050, 150, 180, 150);
       text(" ", v3_text_x, v3_text_y);
     } else if (v3_toggle_state==2){
-      // image(coc, 1050, 150, 170, 150);
       textSize(12)
       text("Addicts are older (35+ years) compared to all users", v3_text_x+430, v3_text_y+270);
       noFill()
       stroke("red")
       strokeWeight(1)
-      rect(v3_text_x+490, v3_text_y+277, 160, 67)
+      rect(v3_text_x+505, v3_text_y+277, 180, 67)
     } else if (v3_toggle_state==3){
-      // image(meth, 1050, 150, 220, 150);
       text("", v3_text_x, v3_text_y);
     } else if (v3_toggle_state==4){
-      // image(hero, 1050, 150, 220, 150);
       text(" ", v3_text_x, v3_text_y);
     }
 }
