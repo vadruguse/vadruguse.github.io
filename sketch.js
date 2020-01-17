@@ -10,7 +10,7 @@ let drugArrays = []; // 3-dimentional array for plotting venn diagram
 let drugAgeArray = [];
 let age_chart_state = -1;
 let drawCrosses = false
-let main_toggle_state = 2;
+let main_toggle_state = 0;
 let v3_toggle_state = 0;
 let drug;
 let drug_users;
@@ -22,7 +22,7 @@ let hover_position_y = [];
 let hover_diameter = [];
 
 let canvasWidth = 1450;
-let canvasHeight = 950;
+let canvasHeight = 900;
 let total_circle_scaling = 6;
 // let rect_scaling = 0.5;
 
@@ -46,11 +46,11 @@ let v3_drug_venn_y_position = 400
 let v1_bar_chart_x_position = 250
 let v1_bar_chart_y_position = 450
 let v1_drug_name_x_scaling = [60,76,48,32,43]
-let v1_pie_x_position = 1050
+let v1_pie_x_position = 1100
 let v1_pie_y_position = 310
 let v1_pie_data_x_position = [-60,70,80,10,-60]
 let v1_pie_data_y_position = [-70,-70,30,70,30]
-let v1_pie_chart_legend_x_position = 970
+let v1_pie_chart_legend_x_position = 1020
 let v1_pie_chart_legend_y_position = 430
 let v1_bar_chart_legend_x_position = 1000;
 let v1_bar_chart_legend_y_position = 680;
@@ -72,7 +72,7 @@ let default_color = 'hsla(0, 0%, 0%, 0.75)'
 
 //Legends
 let age_chart_category = ['Criminal', 'Mentally ill', 'Unemployed']
-let age_below_chart_category = ['Affected users', 'Addicted users', 'Total users']
+let age_below_chart_category = ['Addicted users', 'Total users']
 let age_legend = ['18-25 years', '26-34 years','35-49 years', '50+ years']
 let pie_chart_legend = ["12-17", "18-25", "26-34", "35-49", "50+"]
 
@@ -125,15 +125,20 @@ function setup() {
 function draw() {
   background(background_color);
 
+  stroke(100)
   line(100,0,100,canvasHeight);
   line(canvasWidth-100,0,canvasWidth-100,canvasHeight);
   textSize(30)
+  line(110,90,canvasWidth-110,90)
+  line(110, canvasHeight-100, canvasWidth-110, canvasHeight-100)
+  stroke(0)
+  // noStroke()
+  strokeWeight(0.2)
   fill(default_color)
   text('Illicit Drug Addiction Statistics in the US for 2017', 120, 50)
   textSize(15)
   fill('hsla(0, 0%, 0%, 1)')
   text('Explore drug usage statistics on different social-demographic categories or population-age demographies', 120, 80)
-  line(110,90,canvasWidth-110,90)
 
   k1= color('hsla(221, 100%, 40%, 1)')
   for(let i=0; i<=2;i++){
@@ -166,20 +171,18 @@ function draw() {
   }else if(main_toggle_state==2){
     age_wise_statistics();
   }
-
-  line(110, canvasHeight-140, canvasWidth-110, canvasHeight-140)
 }
 
 function overall_statistics() {
 
-  textSize(22)
-  text('Analysed data of 56000 users from the US Drug Usage Survey * of 2017', 200, 240)
+  textSize(24)
+  text('Analysed data of 56000 users from the US Drug Usage Survey* of 2017', 160, 240)
   textSize(18)
   text('Number of drug users(used atleast 3 times in the past year) reported \n              as well as the fraction of all users who are addicted \n                       is displayed for the 5 most common drugs', 250, 320)
-  fill('hsla(0, 0%, 25%, 0.75)')
+  fill(0)
   textSize(12)
   text("* National Survey on Drug Use and Health (NSDUH),",130,830)
-  textSize(10)
+  textSize(11)
   text("a major source of statistical information on illicit drugs and on mental health issues of the US civilians, population aged 12 or older",418, 830)
   textSize(14)
 
@@ -213,20 +216,21 @@ function overall_statistics() {
     offset+=1
        line(v1_bar_chart_axis_value_position[i+1],v1_bar_chart_y_position+295, v1_bar_chart_axis_value_position[i+1],v1_bar_chart_y_position+305)
   }
-  // stroke(150)
 
   let total_users = int(total_age_data.get(0,"12-17"))+int(total_age_data.get(0,"18-25"))+int(total_age_data.get(0,"26-34"))+int(total_age_data.get(0,"35-49"))+int(total_age_data.get(0,"50+"))
 
   let angles=[round(int(total_age_data.get(0,"12-17"))/total_users*100), round(int(total_age_data.get(0,"18-25"))/total_users*100), round(int(total_age_data.get(0,"26-34"))/total_users*100), round(int(total_age_data.get(0,"35-49"))/total_users*100), round(int(total_age_data.get(0,"50+"))/total_users*100)]
 
   //legend for pie chart
-  text('Age-wise distribution of users', v1_pie_chart_legend_x_position, v1_pie_chart_legend_y_position-260)
+  textSize(16)
+  text('Age-wise distribution of total users', v1_pie_chart_legend_x_position-45, v1_pie_chart_legend_y_position-260)
   pieChart(250,angles)
+  textSize(12)
   for(let i=0;i<=4;i++){
     fill(pie_chart_color[i])
-    rect(v1_pie_chart_legend_x_position+(i*70)-20,v1_pie_chart_legend_y_position+15,10,10)
+    rect(v1_pie_chart_legend_x_position+(i*70)-70,v1_pie_chart_legend_y_position+15,10,10)
     fill(0)
-    text(pie_chart_legend[i],v1_pie_chart_legend_x_position+(i*70)-8, v1_pie_chart_legend_y_position+24)
+    text(pie_chart_legend[i],v1_pie_chart_legend_x_position+(i*70)-56, v1_pie_chart_legend_y_position+24)
   }
 
   //legend for bar chart
@@ -293,9 +297,10 @@ function category_wise_statistics() {
   }
 
   fill(0);
-  text("Number of total users for different social-demographic group is a combination of different fields in the dataset.", 120,830)
-  text(" * Criminal: # of Violent Attacks + Stealing + Selling drugs",150, 850)
-  text(" * Mentally Ill: Mental health + Depressive disorder", 150, 870)
+  textSize(12)
+  text("Number of total users for different social-demographic group is a combination of different fields in the dataset.", 120,818)
+  text(" * Criminal: # of Violent Attacks + Stealing + Selling drugs",150, 840)
+  text(" * Mentally Ill: Mental health + Depressive disorder", 150, 860)
   text("")
   textSize(14);
   for(i=0; i<5;i++){
@@ -340,7 +345,7 @@ function category_wise_statistics() {
       textSize(20)
       text('Drug users socio-demographic statistics', 550, 200)
       textSize(14)
-      affected_rect_height = int(100*int(drug_Data.get(i,'affected_users'))/int(drug_Data.get(i,'total_users')))
+      affected_rect_height = int(100*int(total_ellipse_data.get(i,'UNION'))/int(drug_Data.get(i,'total_users')))
       let k1 = color(venn_chart_color[0])
       k1.setAlpha(170)
       fill(k1);
@@ -458,7 +463,7 @@ function category_wise_statistics() {
   rect(total_n_addicted_circle_position[total_n_addicted_circle_position.length-1]+160, legend_circle_y_position+60,10,50)
   fill(0)
   line(1137,685,1200,685)
-  text('# of affected users',1205,689)
+  text('% of affected users',1205,689)
 
   //Interaction hover
   let mouseOnBox = false;
@@ -596,9 +601,9 @@ function age_wise_statistics() {
     }
   }
 
-  let x_offset = 90
-  let width_offset = 0.8
-  for(let cat=0;cat<=2;cat++) {
+  let x_offset = 70
+  let width_offset = 0.9
+  for(let cat=0;cat<=1;cat++) {
     let x = (v3_drug_venn_x_position+250);
     let y = v3_drug_venn_y_position + 200 + cat * 40
     fill(0);
