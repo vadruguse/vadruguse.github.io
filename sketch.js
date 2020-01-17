@@ -10,7 +10,7 @@ let drugArrays = []; // 3-dimentional array for plotting venn diagram
 let drugAgeArray = [];
 let age_chart_state = -1;
 let drawCrosses = false
-let main_toggle_state = 0;
+let main_toggle_state = 1;
 let v3_toggle_state = 0;
 let drug;
 let drug_users;
@@ -100,7 +100,7 @@ function setup() {
   createCanvas(canvasWidth, canvasHeight);
   textSize(14);
   frameRate(60);
-  textFont('Georgia');
+  textFont('sans-serif');
 
   for(let drug=0;drug<=4;drug++) {
       drugArrays[drug] = [];
@@ -132,7 +132,6 @@ function draw() {
   line(110,90,canvasWidth-110,90)
   line(110, canvasHeight-100, canvasWidth-110, canvasHeight-100)
   stroke(0)
-  // noStroke()
   strokeWeight(0.2)
   fill(default_color)
   text('Illicit Drug Addiction Statistics in the US for 2017', 120, 50)
@@ -285,8 +284,11 @@ function pieChart(diameter, data) {
 
 function category_wise_statistics() {
 
+  fill(0)
+  // text('Toggle me', v2_toggle_x_position-10, v2_toggle_y_position+35)
   fill('hsba(190, 100%, 50%,1)');
   let toggle_color = 'hsba(0, 100%, 50%)';
+  text('Toggle me', v2_toggle_x_position-16, v2_toggle_y_position+35)
   rect(v2_toggle_x_position, v2_toggle_y_position, 50, 20,20);
   if(drawCrosses){
     fill(toggle_color);
@@ -341,23 +343,25 @@ function category_wise_statistics() {
     circle(total_n_addicted_circle_position[i],total_y_position,r);
 
   if(!drawCrosses){
-      fill(0)
+      strokeWeight(0.01)
+      fill('hsla(0, 0%, 35%, 1)')
       textSize(20)
       text('Drug users socio-demographic statistics', 550, 200)
       textSize(14)
       affected_rect_height = int(100*int(total_ellipse_data.get(i,'UNION'))/int(drug_Data.get(i,'total_users')))
       let k1 = color(venn_chart_color[0])
-      k1.setAlpha(170)
+      k1.setAlpha(200)
       fill(k1);
       ellipse(venn_x_position+(i*240),(venn_y_position-350),120,120)
       let k2 = color(venn_chart_color[1])
-      k2.setAlpha(170)
+      k2.setAlpha(200)
       fill(k2);
       ellipse((venn_x_position-40)+(i*240),(venn_y_position-280),120,120)
       let k3 = color(venn_chart_color[2])
-      k3.setAlpha(170)
+      k3.setAlpha(200)
       fill(k3);
       ellipse((venn_x_position+40)+(i*240),(venn_y_position-280),120,120)
+      strokeWeight(0.2)
       fill(0)
 
     let values = [total_ellipse_data.get(i,'crime'),
@@ -380,23 +384,25 @@ function category_wise_statistics() {
 
     }
     else{
-      fill(0)
+      strokeWeight(0.01)
+      fill('hsla(0, 0%, 35%, 1)')
       textSize(20)
       text('Drug addicts socio-demographic statistics', 550, 200)
       textSize(14)
       affected_rect_height = int(100*int(drug_Data.get(i,'affected_users'))/int(drug_Data.get(i,'addicted_users')))
       let k1 = color(venn_chart_color[0])
-      k1.setAlpha(170)
+      k1.setAlpha(200)
       fill(k1);
       ellipse(venn_x_position+(i*240),(venn_y_position-350),120,120)
       let k2 = color(venn_chart_color[1])
-      k2.setAlpha(170)
+      k2.setAlpha(200)
       fill(k2);
       ellipse((venn_x_position-40)+(i*240),(venn_y_position-280),120,120)
       let k3 = color(venn_chart_color[2])
-      k3.setAlpha(170)
+      k3.setAlpha(200)
       fill(k3);
       ellipse((venn_x_position+40)+(i*240),(venn_y_position-280),120,120)
+      strokeWeight(0.2)
 
     let values = [affected_data.get(i,'crime'),
                   affected_data.get(i,'mental'),
@@ -497,6 +503,42 @@ function category_wise_statistics() {
       }
     }
   }
+
+  if(drawCrosses){
+    textSize(25)
+    let start_y = 350
+    let start_x = 130
+    text('Conclusions', start_x,start_y-30)
+    textSize(15)
+    fill(100)
+    text("* Marijuana addicts are less likely to be \n   criminals compared to other drugs", start_x, start_y+10);
+
+    text("* Criminal-activity and mental illness tend to \n   co-occur together in drug addicts for all drugs", start_x, start_y+60);
+    text("* Cocaine users and addicts are very different \n   in terms of socio-demographics",start_x,start_y+110)
+    fill(0)
+    text("Meth and heroin seem most dangerous because:",start_x,start_y+170)
+    fill('hsla(0, 100%, 53%, 1)')
+    text("- Addicted users are more socially damaged", start_x+20, start_y+190)
+  text("- They are highly addictive", start_x+20, start_y+210)
+  fill(0)
+  }
+  else{
+    textSize(25)
+    let start_y = 320
+    let start_x = 130
+    text("WHAT", start_x, start_y-30)
+    textSize(15)
+    text("Social-demographic analysis of drug users and drug \naddicts on three different aspects, criminal activities,\nmental health and unemployment",  start_x, start_y);
+    textSize(13)
+    // fill('hsba(190, 100%, 50%,1)');
+    fill('hsba(0, 100%, 50%,0.75)')
+    text("Click on the toggle to view statistics for drug addicted users",  start_x, start_y+80);
+    fill('hsla(0, 100%, 53%, 1)')
+    textSize(20)
+    text("Mental Health is a relevant social \n   issue among Marijuana users", start_x+30, 490);
+    fill(0)
+    //text("Overlap between criminals and mentally ill \nis higher compared to other overlaps for all drugs", 150, 450);
+  }
 }
 
 
@@ -513,11 +555,11 @@ function age_wise_statistics() {
     rect(v3_toggle_x_position+(i*drug_toggle_offset), v3_toggle_y_position, drug_toggle_offset, 40,150)
   }
   fill(0)
-  text('Marijuana', (v3_toggle_x_position+10), (v3_toggle_y_position+25))
-  text('Hallucinogen', (v3_toggle_x_position+drug_toggle_offset+10), (v3_toggle_y_position+25))
-  text('Cocaine', (v3_toggle_x_position+2*drug_toggle_offset+10), (v3_toggle_y_position+25))
-  text('Meth', (v3_toggle_x_position+3*drug_toggle_offset+10), (v3_toggle_y_position+25))
-  text('Heroin', (v3_toggle_x_position+4*drug_toggle_offset+10), (v3_toggle_y_position+25))
+  text('Marijuana', (v3_toggle_x_position+30), (v3_toggle_y_position+25))
+  text('Hallucinogen', (v3_toggle_x_position+drug_toggle_offset+25), (v3_toggle_y_position+25))
+  text('Cocaine', (v3_toggle_x_position+2*drug_toggle_offset+40), (v3_toggle_y_position+25))
+  text('Meth', (v3_toggle_x_position+3*drug_toggle_offset+50), (v3_toggle_y_position+25))
+  text('Heroin', (v3_toggle_x_position+4*drug_toggle_offset+40), (v3_toggle_y_position+25))
 
     drug = drug_Data.get(v3_toggle_state, 'drug')
     drug_users = drug_Data.get(v3_toggle_state,'total_users')
@@ -539,36 +581,39 @@ function age_wise_statistics() {
     r = t*((drug_addicts/drug_users) **0.5);
     circle(v3_drug_venn_x_position,v3_drug_venn_y_position,r);
 
-    let values = [affected_data.get(v3_toggle_state,'crime'),
-                affected_data.get(v3_toggle_state,'mental'),
-                affected_data.get(v3_toggle_state,'unemployment'),
-                affected_data.get(v3_toggle_state,'crime_mental'),
-                affected_data.get(v3_toggle_state,'crime_unemployment'),
-                affected_data.get(v3_toggle_state,'mental_unemployment'),
-                affected_data.get(v3_toggle_state,'INTERSECTION')];
-    let affected_data_union = affected_data.get(v3_toggle_state,'UNION');
+  let values = [total_ellipse_data.get(v3_toggle_state,'crime'),
+                total_ellipse_data.get(v3_toggle_state,'mental'),
+                total_ellipse_data.get(v3_toggle_state,'unemployment'),
+                total_ellipse_data.get(v3_toggle_state,'crime_mental'),
+                total_ellipse_data.get(v3_toggle_state,'crime_unemployment'),
+                total_ellipse_data.get(v3_toggle_state,'mental_unemployment'),
+                total_ellipse_data.get(v3_toggle_state,'INTERSECTION')];
+    let all_addict_data = total_ellipse_data.get(v3_toggle_state,'ALL_ADDICTS')
 
 
+    strokeWeight(0.01)
     let k4 = color(venn_chart_color[0])
-    k4.setAlpha(150)
+    k4.setAlpha(200)
     fill(k4);
     ellipse(v3_drug_venn_x_position,(v3_drug_venn_y_position+120),150,150)
     let k5 = color(venn_chart_color[1])
-    k5.setAlpha(150)
+    k5.setAlpha(200)
     fill(k5);
     ellipse((v3_drug_venn_x_position-40),(v3_drug_venn_y_position+210),150,150)
     let k6 = color(venn_chart_color[2])
-    k6.setAlpha(150)
+    k6.setAlpha(200)
     fill(k6);
     ellipse((v3_drug_venn_x_position+40),(v3_drug_venn_y_position+210),150,150)
+    strokeWeight(0.2)
+
     fill(0)
-    text(values[0],(v3_drug_venn_x_position-10),(v3_drug_venn_y_position+90))
-    text(values[1],(v3_drug_venn_x_position-90),(v3_drug_venn_y_position+ 240))
-    text(values[2],(v3_drug_venn_x_position+70),(v3_drug_venn_y_position+ 240))
-    text(values[3],(v3_drug_venn_x_position-50),(v3_drug_venn_y_position+ 160))
-    text(values[4],(v3_drug_venn_x_position+35),(v3_drug_venn_y_position+ 160))
-    text(values[5],(v3_drug_venn_x_position-10),(v3_drug_venn_y_position+ 240))
-    text(values[6],(v3_drug_venn_x_position-10),(v3_drug_venn_y_position+ 180))
+    text(round(100*values[0]/all_addict_data)+"%",(v3_drug_venn_x_position-10),(v3_drug_venn_y_position+90))
+    text(round(100*values[1]/all_addict_data)+"%",(v3_drug_venn_x_position-90),(v3_drug_venn_y_position+ 240))
+    text(round(100*values[2]/all_addict_data)+"%",(v3_drug_venn_x_position+70),(v3_drug_venn_y_position+ 240))
+    text(round(100*values[3]/all_addict_data)+"%",(v3_drug_venn_x_position-50),(v3_drug_venn_y_position+ 160))
+    text(round(100*values[4]/all_addict_data)+"%",(v3_drug_venn_x_position+35),(v3_drug_venn_y_position+ 160))
+    text(round(100*values[5]/all_addict_data)+"%",(v3_drug_venn_x_position-10),(v3_drug_venn_y_position+ 240))
+    text(round(100*values[6]/all_addict_data)+"%",(v3_drug_venn_x_position-10),(v3_drug_venn_y_position+ 180))
 
   colorMode(RGB, 255)
 
