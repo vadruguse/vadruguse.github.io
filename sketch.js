@@ -12,7 +12,7 @@ let drugArrays = []; // 3-dimentional array for plotting venn diagram
 let drugAgeArray = [];
 let age_chart_state = -1;
 let drawCrosses = false
-let main_toggle_state = 2;
+let main_toggle_state = 0;
 let v3_toggle_state = 0;
 let drug;
 let drug_users;
@@ -699,8 +699,9 @@ function age_wise_statistics() {
 
     v3_text_x = 350;
     v3_text_y = 330;
+  image(mj, 1050, 150, 150, 150);
   if(v3_toggle_state==0){
-      image(mj, 1050, 150, 150, 150);
+      
       textSize(12)
       text("Addicts tend to be younger (18-25 years old) compared to all users", v3_text_x+300, v3_text_y+270);
       noFill()
@@ -708,10 +709,10 @@ function age_wise_statistics() {
       strokeWeight(1)
       rect(v3_text_x+386, v3_text_y+277, 50, 67)
     } else if (v3_toggle_state==1){
-      image(hal, 1050, 150, 180, 150);
+      // image(hal, 1050, 150, 180, 150);
       text(" ", v3_text_x, v3_text_y);
     } else if (v3_toggle_state==2){
-      image(coc, 1050, 150, 170, 150);
+      // image(coc, 1050, 150, 170, 150);
       textSize(12)
       text("Addicts are older (35+ years) compared to all users", v3_text_x+430, v3_text_y+270);
       noFill()
@@ -719,10 +720,10 @@ function age_wise_statistics() {
       strokeWeight(1)
       rect(v3_text_x+490, v3_text_y+277, 160, 67)
     } else if (v3_toggle_state==3){
-      image(meth, 1050, 150, 220, 150);
+      // image(meth, 1050, 150, 220, 150);
       text("", v3_text_x, v3_text_y);
     } else if (v3_toggle_state==4){
-      image(hero, 1050, 150, 220, 150);
+      // image(hero, 1050, 150, 220, 150);
       text(" ", v3_text_x, v3_text_y);
     }
 }
