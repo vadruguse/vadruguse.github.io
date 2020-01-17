@@ -10,7 +10,7 @@ let drugArrays = []; // 3-dimentional array for plotting venn diagram
 let drugAgeArray = [];
 let age_chart_state = -1;
 let drawCrosses = false
-let main_toggle_state = 1;
+let main_toggle_state = 0;
 let v3_toggle_state = 0;
 let drug;
 let drug_users;
@@ -72,7 +72,7 @@ let default_color = 'hsla(0, 0%, 0%, 0.75)'
 
 //Legends
 let age_chart_category = ['Criminal', 'Mentally ill', 'Unemployed']
-let age_below_chart_category = ['Addicted users', 'Total users']
+let age_below_chart_category = ['Addicted users', 'All users']
 let age_legend = ['18-25 years', '26-34 years','35-49 years', '50+ years']
 let pie_chart_legend = ["12-17", "18-25", "26-34", "35-49", "50+"]
 
@@ -494,12 +494,12 @@ function category_wise_statistics() {
          (mouseY-hover_position_y[j])**2 <= (hover_diameter[j]/2)**2) {
         mouseOnBox = true;
           fill('hsla(0, 0%, 66%, 0.05)');
-          rect((total_n_addicted_circle_position[j]-150),(hover_position_y[j]-40),150,90,20);
+          rect((total_n_addicted_circle_position[j]),(hover_position_y[j]-40),150,90,20);
           fill(1);
-          text(('Drug: ' + drug_Data.get(j,'drug')), (total_n_addicted_circle_position[j]-135),(hover_position_y[j]-20));
-          text(('# drug users: ' + drug_users), (total_n_addicted_circle_position[j]-135),(hover_position_y[j]));
-          text(('# drug addicts: ' + drug_addicts), (total_n_addicted_circle_position[j]-135),(hover_position_y[j]+20));
-          text(('% of addicts: ' + addicted_to_total + '%'), (total_n_addicted_circle_position[j]-135),(hover_position_y[j]+40));
+          text(('Drug: ' + drug_Data.get(j,'drug')), (total_n_addicted_circle_position[j])+15,(hover_position_y[j]-20));
+          text(('# drug users: ' + drug_users), (total_n_addicted_circle_position[j]+15),(hover_position_y[j]));
+          text(('# drug addicts: ' + drug_addicts), (total_n_addicted_circle_position[j]+15),(hover_position_y[j]+20));
+          text(('% of addicts: ' + addicted_to_total + '%'), (total_n_addicted_circle_position[j]+15),(hover_position_y[j]+40));
       }
     }
   }
@@ -530,7 +530,6 @@ function category_wise_statistics() {
     textSize(15)
     text("Social-demographic analysis of drug users and drug \naddicts on three different aspects, criminal activities,\nmental health and unemployment",  start_x, start_y);
     textSize(13)
-    // fill('hsba(190, 100%, 50%,1)');
     fill('hsba(0, 100%, 50%,0.75)')
     text("Click on the toggle to view statistics for drug addicted users",  start_x, start_y+80);
     fill('hsla(0, 100%, 53%, 1)')
@@ -568,7 +567,7 @@ function age_wise_statistics() {
 
     //write drug name below
     fill(0);
-    text(drug,(v3_drug_venn_x_position-35),(v3_drug_venn_y_position+310));
+    // text(drug,(v3_drug_venn_x_position-35),(v3_drug_venn_y_position+310));
 
     // outer circle
     fill(color('white'));
@@ -624,7 +623,7 @@ function age_wise_statistics() {
   let age_chart_offset = 200;
   fill(0)
   textSize(18);
-  text(drug + ' addiction statistics on specific population age demographies', (v3_drug_venn_x_position+age_chart_offset), v3_drug_venn_y_position)
+  // text(drug + ' addiction statistics on specific population age demographies', (v3_drug_venn_x_position+age_chart_offset), v3_drug_venn_y_position+310)
 
   textSize(14);
   line(v3_drug_venn_x_position+300,v3_drug_venn_y_position+20, v3_drug_venn_x_position+300, v3_drug_venn_y_position+160)
@@ -675,6 +674,42 @@ function age_wise_statistics() {
   rect(age_legend_rect_position[age_legend_rect_position.length-1]+180, 440+20*index, 60, 10);
     fill(1);
     text(age_legend[index], age_legend_rect_position[age_legend_rect_position.length-1]+250, 450+20*index)
+    }
+
+    textSize(25)
+    text("Age-wise distribution of Social Problems in Drug Users", 270, 200)
+    textSize(18)
+    let v3_text_x = 450;
+    let v3_text_y = 310;
+    // text("Conclusions:", v3_text_x,v3_text_y-30)
+    textSize(16)
+    fill('hsla(0, 100%, 53%, 1)')
+    text("  - Criminal drug users are most common at young age",v3_text_x+10,v3_text_y)
+    text("  - Mentally ill drug users are less common at young age compared \n    to the criminals and unemployed", v3_text_x+10, v3_text_y+25);
+    fill("red")
+
+    v3_text_x = 350;
+    v3_text_y = 330;
+  if(v3_toggle_state==0){
+      textSize(12)
+      text("Addicts tend to be younger (18-25 years old) compared to all users", v3_text_x+300, v3_text_y+270);
+      noFill()
+      stroke("red")
+      strokeWeight(1)
+      rect(v3_text_x+386, v3_text_y+277, 50, 67)
+    } else if (v3_toggle_state==1){
+      text(" ", v3_text_x, v3_text_y);
+    } else if (v3_toggle_state==2){
+      textSize(12)
+      text("Addicts are older (35+ years) compared to all users", v3_text_x+430, v3_text_y+270);
+      noFill()
+      stroke("red")
+      strokeWeight(1)
+      rect(v3_text_x+490, v3_text_y+277, 160, 67)
+    } else if (v3_toggle_state==3){
+      text("", v3_text_x, v3_text_y);
+    } else if (v3_toggle_state==4){
+      text(" ", v3_text_x, v3_text_y);
     }
 }
 
